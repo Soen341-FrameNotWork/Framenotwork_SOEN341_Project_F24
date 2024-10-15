@@ -23,11 +23,12 @@ VALUES
 ('Ava Scott', 'ava.scott@example.com', 'studypass10');
 
 -- Populate courses
+-- Changing all values to 1 here just to test database connection.
 INSERT INTO courses (c_name, instructor_id)
 VALUES
 ('SOEN-341', 1),
-('COMP-346', 2),
-('COMP-352', 3);
+('COMP-346', 1),
+('COMP-352', 1);
 
 -- Populate course_student (each student is in each course initially)
 INSERT INTO course_student (course_id, student_id)
