@@ -1,11 +1,8 @@
 -- Create a database in MySQL workbench (right click, create schema, double click to select the new db)
 -- Drop all tables to start fresh
-DROP TABLE IF EXISTS instructors;
-DROP TABLE IF EXISTS students;
-DROP TABLE IF EXISTS courses;
-DROP TABLE IF EXISTS teams;
-DROP TABLE IF EXISTS team_student;
-DROP TABLE IF EXISTS course_student;
+DROP SCHEMA IF EXISTS peer_assessment_app;
+CREATE SCHEMA peer_assessment_app;
+USE peer_assessment_app;
 
 -- TABLES
 -- Create instructors table
@@ -59,4 +56,29 @@ CREATE TABLE course_student (
     FOREIGN KEY (student_id) REFERENCES students(s_id),
     -- Make sure student is not added twice to a course
     UNIQUE(course_id, student_id)
+);
+
+
+-- Ratings ----------------------
+
+-- Cooperation, Conceptual Contribution, Practical COntribution, Work Ethic
+CREATE TABLE criterias (             
+    criteria_id INT AUTO_INCREMENT PRIMARY KEY,
+    criteria_name VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE ratings (
+    r_id INT AUTO_INCREMENT PRIMARY KEY,
+    reviewed_id INT NOT NULL, -- Who is being reviewed
+    reviewing_id INT NOT NULL, -- Who is reviewing
+    criteria_id INT NOT NULL,
+    course_id INT NOT NULL,
+    score INT NOT NULL CHECK (score >=1 AND score <= 7),
+    -- comment VARCHAR(200), ???
+    FOREIGN KEY (reviewed_id) REFERENCES students(s_id),
+    FOREIGN KEY (reviewing_id) REFERENCES students(s_id),
+    FOREIGN KEY (criteria_id) REFERENCES criterias(criteria_id),
+    FOREIGN KEY (course_id) REFERENCES courses(c_id),
+    -- Make sure student reviews another one for a course only once
+    UNIQUE (reviewed_id, reviewing_id, criteria_id, course_id)
 );

@@ -64,3 +64,13 @@ VALUES
 (3, 10);
 
 -- teams and team_student are populated later when instructor assigns a student to a team
+
+
+-- Ratings ---------------------
+
+INSERT INTO criterias (criteria_name)
+VALUES
+('Cooperation'),
+('Conceptual Contribution'),
+('Practical Contribution'),
+('Work Ethic');
