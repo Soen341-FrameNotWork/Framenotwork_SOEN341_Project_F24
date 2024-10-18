@@ -38,7 +38,7 @@ export default function Home() {
                 {/* <Divider sx={{bgcolor: "black", border: "1px solid black", width: "400px", margin: ""}}/> */}
             </Box>
 
-            <CourseCard onClick={showList}/>
+            <CourseCard onClick={showList}/> {/*TODO: Change onClick function for a router to StudentList/page.tsx */}
         </Box> : <StudentList/>}
         
         {/* <Sidebar/> */}
