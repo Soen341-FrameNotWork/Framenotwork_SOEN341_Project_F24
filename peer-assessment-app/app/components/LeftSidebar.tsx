@@ -19,6 +19,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+import AccountMenu from './AccountMenu';
+import { Avatar } from '@mui/material';
 
 
 const drawerWidth = 240;
@@ -95,15 +97,15 @@ export default function PersistentDrawerLeft() {
   };
 
   return (
-    <Box sx={{ display: 'flex', maxHeight: "100px"}}>
-      <CssBaseline />
-      <AppBar position="fixed" open={open} sx={{ bgcolor: "#800020"}}>
-        <Toolbar>
+    <Box sx={{ display: 'flex', maxHeight: "100px", width:"100%"}}>
+      {/* <CssBaseline /> */}
+      <AppBar position='fixed' open={open} sx={{ bgcolor: "#800020", width:"100%"}}>
+        <Toolbar sx={{width:"100%"}}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
             onClick={handleDrawerOpen}
-            edge="start"
+            
             sx={[
               {
                 mr: 2,
@@ -113,10 +115,10 @@ export default function PersistentDrawerLeft() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
+          <Typography variant="h6"  component="div">
             Concordia University
           </Typography>
-        </Toolbar>
+      </Toolbar>
         {/* <AccountMenu ></AccountMenu> */} {/** TODO: Fix account */}
       </AppBar>
       <Drawer
