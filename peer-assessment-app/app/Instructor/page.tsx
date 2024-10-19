@@ -1,5 +1,4 @@
-'use client'
-import React, { useState } from "react";
+'use client';
 // import Sidebar from "./components/Sidebar";
 import Box from "@mui/material/Box";
 import CourseCard from "../components/Course"
@@ -8,12 +7,11 @@ import CourseCard from "../components/Course"
 import StudentList from "../components/StudentList";
 import LeftSidebar from "../components/LeftSidebar";
 import { Typography } from "@mui/material";
+import CourseData from 'app/api/course/route';
 
-export default function Home() {
-
-    const [course, setCourse] = useState(true);
-    const showList = () => {
-        setCourse(false);
+export default async function Home() {
+    function showList(): void {
+        throw new Error("Function not implemented.");
     }
 
     return(
@@ -29,7 +27,6 @@ export default function Home() {
         {/* This is a template of the course dashboard to be implemented later */}
         <LeftSidebar />
 
-        {course?
         <Box sx={{display: "flex", flexWrap: "wrap", marginLeft: "100px", padding: "10px", gap:"7px"}}>
             <Box sx={{width: "100%", marginBottom: "20px"}}>
                 <Typography variant="h4">
@@ -39,7 +36,7 @@ export default function Home() {
             </Box>
 
             <CourseCard onClick={showList}/>
-        </Box> : <StudentList/>}
+        </Box> : <StudentList/>
         
         {/* <Sidebar/> */}
         

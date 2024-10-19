@@ -1,25 +1,51 @@
 import GetDBSettings from "@lib/db";
 import mysql from 'mysql2/promise';
 
-let courses = []
 
-export default async function getDBData(): Promise<string[]>  {
+export let courses: string[];
+
+export default async function getDBData()  {
     let query = '';
-    let params: any = [];
     let nameField = '';
 
-    query = 'SELECT c_name, where instructor_id = ?';
-    params = [user.instructor_id];
-    nameField = 'c_name';
+    query = 'SELECT c_name where instructor_id = 1';
+  //  params = [user.instructor_id];
+    // nameField = 'c_name';
+    // const db = await mysql.createPool({
+    // connectionLimit: 10,
+    // host: '127.0.0.1',
+    // user: 'root',
+    // password: 'password',
+    // database: 'sys'
+    // }); 
 
-const db = await mysql.createConnection(GetDBSettings());
-const [rows]: any = await db.execute(query, params);
+    const mysql = require('mysql2');
 
-if (rows.length === 0) {
-    // No user found
-    return [];
+    const connection = mysql.createConnection({
+      host: 'localhost',
+      user: 'root',
+      password: 'password',
+      database: 'sys'
+    })
+
+    function fetchCourses() {
+      return new Promise((resolve, reject) => {
+ connection.query('SELECT c_name FROM courses where instructor_id = 1', (error: any, results: any) => {
+    if (error) {
+      console.log('cannot connect to db');
+    }
+    courses = results.map((row: { c_name: any; }) => row.c_name);
+    
+
+    connection.end();
+ });
 }
-
-courses = rows;
-return courses;
+  )};
+  fetchCourses()
+  // .then(courses => {
+  //   console.log('Courses:', courses);
+  // })
+  // .catch(error => {
+  //   console.error('Error fetching courses:', error);
+  // });
 }
