@@ -1,8 +1,9 @@
-import NextAuth, { NextAuthOptions } from "next-auth";
+import NextAuth, { customUser, NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { compare } from "bcrypt";
 import mysql from 'mysql2/promise';
 import GetDBSettings from "@lib/db";
+
 
 
 export const authOptions: NextAuthOptions = {
@@ -16,12 +17,14 @@ export const authOptions: NextAuthOptions = {
         async jwt({token, account, user}){
             if (account) {
                 token.accessToken = account.access_token
-                token.id = user.id
+                token.id = (user as customUser).id;
+                token.role = (user as customUser).role;
               }
             return token
         },
         async session({session, token}){
-            session.user.id = token.id as string
+            session.user.id = token.id as string;
+            session.user.role = token.role as string;
             return session
         }
         

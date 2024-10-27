@@ -17,7 +17,7 @@ export default function CourseCard({onClick, row}:CourseCardProp) {
   /**
    * we use the course id for the query that will get the students info for each student in the course.
    */
-
+ 
 
   return (
     <Card sx={{ minWidth: 345 , minHeight: 150, bgcolor: "lightblue" }} >
