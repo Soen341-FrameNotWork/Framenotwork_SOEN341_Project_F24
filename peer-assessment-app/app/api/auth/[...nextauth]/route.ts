@@ -4,12 +4,27 @@ import { compare } from "bcrypt";
 import mysql from 'mysql2/promise';
 import GetDBSettings from "@lib/db";
 
-const authOptions: NextAuthOptions = {
+
+export const authOptions: NextAuthOptions = {
     session: {
         strategy: "jwt",
     },
     pages: {
         signIn: "/login",
+    },
+    callbacks:{
+        async jwt({token, account, user}){
+            if (account) {
+                token.accessToken = account.access_token
+                token.id = user.id
+              }
+            return token
+        },
+        async session({session, token}){
+            session.user.id = token.id as string
+            return session
+        }
+        
     },
     providers: [
         CredentialsProvider({
@@ -69,6 +84,7 @@ const authOptions: NextAuthOptions = {
                     const passwordCorrect = await compare(password, user[passwordField]);
 
                     if (passwordCorrect) {
+                        // Any object returned will be saved in `user` property of the JWT
                         return {
                             id: user[idField],
                             email: user[emailField],
@@ -76,8 +92,10 @@ const authOptions: NextAuthOptions = {
                             role: userType,
                         };
                     } else {
+                        // If you return null then an error will be displayed advising the user to check their details.
                         return null;
                     }
+                    // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
                 } catch (error) {
                     console.error('Database error:', error);
                     return null;
@@ -85,7 +103,6 @@ const authOptions: NextAuthOptions = {
             },
         }),
     ],
-
 };
 
 const handler = NextAuth(authOptions);

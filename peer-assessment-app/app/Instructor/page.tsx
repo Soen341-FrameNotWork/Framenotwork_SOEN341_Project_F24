@@ -1,17 +1,21 @@
-"use client"
+
 // import Sidebar from "./components/Sidebar";
 import Box from "@mui/material/Box";
-import CourseCard from "../components/Course"
+import CourseCard from "../components/CourseCard"
 // import { Divider, Stack, Typography } from "@mui/material";
 // import { Padding } from "@mui/icons-material";
 import StudentList from "../components/StudentList";
 import LeftSidebar from "../components/LeftSidebar";
 import { Typography } from "@mui/material";
 import FormDialog from "../components/ClassCreation";
-import { useEffect, useState } from "react";
+import  getCourses  from "../api/course/route";
+// import { useEffect, useState } from "react";
 
 export default async function Home() {
-    const [courses, setCourses] = useState([]);
+    
+    const rows = await getCourses();
+    
+    console.log(rows);
 
 //   useEffect(() => {
 //     const fetchCourses = async () => {
@@ -30,9 +34,9 @@ export default async function Home() {
 //     fetchCourses(); 
 //   }, []);
 
-  const showList = () => {
-    // Implement the logic to show the list of courses
-  };
+//   const showList = () => {
+//     // Implement the logic to show the list of courses
+//   };
     return(
         <>
         {/* <Box sx={{display: "flex", flexWrap: "wrap",border: "2px solid white", margin: "80px", padding: "30px 30px 30px 30px",  gap:"7px"}}> */}
@@ -52,7 +56,10 @@ export default async function Home() {
                 </Typography>
                 {/* <Divider sx={{bgcolor: "black", border: "1px solid black", width: "400px", margin: ""}}/> */}
             </Box>
-          {/* <CourseCard onClick={showList}/> */}
+            {rows.map((row:any, index:number) => 
+                (<CourseCard key={index} onClick={(e)=>{e.preventDefault()}} row={row} />))
+            }
+          
           <FormDialog/>
         </Box> : <StudentList/>
                 

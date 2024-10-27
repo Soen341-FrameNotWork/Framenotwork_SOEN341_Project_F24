@@ -1,6 +1,6 @@
 'use client'
 import { Box, Typography } from "@mui/material";
-import CourseCard from "../components/Course";
+import CourseCard from "../components/CourseCard";
 import LeftSidebar from "../components/LeftSidebar";
 import React from "react";
 

@@ -28,7 +28,7 @@ export default function FormDialog() {
   };
 
   return (
-    <React.Fragment>
+    <>
       <Button variant="outlined" onClick={handleClickOpen}>
         Create course
       </Button>
@@ -70,6 +70,6 @@ export default function FormDialog() {
           <Button type="submit">Create</Button>
         </DialogActions>
       </Dialog>
-    </React.Fragment>
+    </>
   );
 }

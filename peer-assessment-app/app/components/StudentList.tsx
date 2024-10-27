@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
+// import getStudents from '@/app/api/student_list/route'
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'ID', width: 70 },
@@ -32,12 +33,18 @@ const rows = [
   { id:9, s_id: 9, s_lastName: 'Roxie', s_firstName: 'Harvey', s_email:null },
 ];
 
-
-
-
 const paginationModel = { page: 0, pageSize: 5 };
 
+// interface rows {
+//   c_id:string,
+//   c_name:string
+// }
+// interface listParams{
+//   rows:rows
+// }
+
 export default function StudentList() {
+
   return (
     <Paper sx={{ height: "100%", width: '100%' }}>
       <DataGrid

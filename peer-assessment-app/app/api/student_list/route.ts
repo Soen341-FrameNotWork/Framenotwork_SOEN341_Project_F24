@@ -1,18 +1,13 @@
 import GetDBSettings from "@lib/db";
 import mysql from 'mysql2/promise';
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 
-export default async function getCourses() {
-  const session = await getServerSession(authOptions);
-
-  if (session && session.user) {
-    const query = 'SELECT * FROM courses WHERE instructor_id = ?';
+export default async function getStudents(c_id:string) {
+    const query = 'SELECT * FROM course_student WHERE course_id = ?';
     const db = await mysql.createConnection(GetDBSettings());
 
     try {
-      const [rows]: any = await db.execute(query, [session.user.id]);
+      const [rows]: any = await db.execute(query, [c_id]);
       db.end();
 
       // Extract c_name values
@@ -24,12 +19,12 @@ export default async function getCourses() {
     } catch (error) {
       console.error('Database error:', error);
       db.end();
-      throw error;
     }
+
+
+    return [];
   }
 
-  return [];
-}
 
 
 
