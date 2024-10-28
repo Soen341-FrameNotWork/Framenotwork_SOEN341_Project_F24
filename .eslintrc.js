@@ -7,7 +7,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'prettier',
   ],
-  plugins: ['@typescript-eslint', 'react'],
+  plugins: ['@typescript-eslint', 'react', 'eslint-plugin-react'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 2021,
