@@ -22,17 +22,21 @@ jobs:
           node-version: '22.9.0'
 
       - name: Install dependencies
-        run: cd peer-assessment-app && npm install
+        working-directory: peer-assessment-app
+        run: npm install
 
       - name: Lint the code
-        run: cd peer-assessment-app && npm run lint
+        working-directory: peer-assessment-app
+        run: npm run lint
 
       - name: Type Check
-        run: cd peer-assessment-app && npm run type-check
+        working-directory: peer-assessment-app
+        run: npm run type-check
 
-      - name: Check Code Formatting with Prettier
-        run: cd peer-assessment-app && npm run format:check
+      - name: Format Code with Prettier
+        working-directory: peer-assessment-app
+        run: npm run format:check
 
       - name: Build the project
-        run: cd peer-assessment-app && npm run build
-
+        working-directory: peer-assessment-app
+        run: npm run build
