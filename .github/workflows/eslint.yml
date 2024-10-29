@@ -22,7 +22,7 @@ jobs:
           node-version: '22.9.0'
 
       - name: Install dependencies
-        run: npm install
+        run: cd peer-assessment-app && npm install
 
       - name: Lint the code
         run: cd peer-assessment-app && npm run lint
@@ -34,5 +34,5 @@ jobs:
         run: cd peer-assessment-app && npm run format:check
 
       - name: Build the project
-        run: npm run build
+        run: cd peer-assessment-app && npm run build
 

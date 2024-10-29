@@ -1,7 +1,7 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { compare } from "bcrypt";
-import mysql from 'mysql2/promise';
+import mysql from "mysql2/promise";
 import GetDBSettings from "@lib/db";
 
 const authOptions: NextAuthOptions = {
@@ -31,27 +31,29 @@ const authOptions: NextAuthOptions = {
                         return null;
                     }
 
-                    let query = '';
+                    let query = "";
                     let params: any = [];
-                    let idField = '';
-                    let nameField = '';
-                    let emailField = '';
-                    let passwordField = '';
+                    let idField = "";
+                    let nameField = "";
+                    let emailField = "";
+                    let passwordField = "";
 
-                    if (userType === 'student') {
-                        query = 'SELECT s_id as id, s_name as name, s_email as email, s_password as password FROM students WHERE s_email = ?';
+                    if (userType === "student") {
+                        query =
+                            "SELECT s_id as id, s_name as name, s_email as email, s_password as password FROM students WHERE s_email = ?";
                         params = [email];
-                        idField = 'id';
-                        nameField = 'name';
-                        emailField = 'email';
-                        passwordField = 'password';
-                    } else if (userType === 'instructor') {
-                        query = 'SELECT i_id as id, i_name as name, i_email as email, i_password as password FROM instructors WHERE i_email = ?';
+                        idField = "id";
+                        nameField = "name";
+                        emailField = "email";
+                        passwordField = "password";
+                    } else if (userType === "instructor") {
+                        query =
+                            "SELECT i_id as id, i_name as name, i_email as email, i_password as password FROM instructors WHERE i_email = ?";
                         params = [email];
-                        idField = 'id';
-                        nameField = 'name';
-                        emailField = 'email';
-                        passwordField = 'password';
+                        idField = "id";
+                        nameField = "name";
+                        emailField = "email";
+                        passwordField = "password";
                     } else {
                         // Invalid user type
                         return null;
@@ -66,7 +68,10 @@ const authOptions: NextAuthOptions = {
 
                     const user = rows[0];
 
-                    const passwordCorrect = await compare(password, user[passwordField]);
+                    const passwordCorrect = await compare(
+                        password,
+                        user[passwordField],
+                    );
 
                     if (passwordCorrect) {
                         return {
@@ -79,16 +84,14 @@ const authOptions: NextAuthOptions = {
                         return null;
                     }
                 } catch (error) {
-                    console.error('Database error:', error);
+                    console.error("Database error:", error);
                     return null;
                 }
             },
         }),
     ],
-
 };
 
 const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
-
