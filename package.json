@@ -6,6 +6,7 @@
     "next-auth": "^4.24.8"
   },
   "devDependencies": {
+    "@next/eslint-plugin-next": "^15.0.1",
     "@types/bcrypt": "^5.0.2",
     "@types/json-schema": "^7.0.15",
     "@types/react": "^18.3.9",
