@@ -2,13 +2,13 @@
 // import Sidebar from "./components/Sidebar";
 import Box from "@mui/material/Box";
 import CourseCard from "../components/CourseCard"
-// import { Divider, Stack, Typography } from "@mui/material";
-// import { Padding } from "@mui/icons-material";
 import StudentList from "../components/StudentList";
 import LeftSidebar from "../components/LeftSidebar";
 import { Typography } from "@mui/material";
 import FormDialog from "../components/ClassCreation";
 import { useEffect, useState } from "react";
+import { Session } from "next-auth";
+
 
 
 
@@ -16,7 +16,14 @@ export default function Home() {
     const [selectedCourseId, setSelectedCourseId] = useState(null);
     const [students, setStudents] = useState([]);
     const [courses, setCourses] = useState([]);
-    
+    const [session, setSession] = useState<Session | null>(null);
+
+    useEffect(() => {
+        fetch('/api/protected')
+        .then((res) => res.json())
+        .then((data) => setSession(data))
+        .catch((error) => console.error('Error fetching session:', error));
+    }, []);
 
     const fetchStudents = async (courseId: any) => {
         try {
@@ -44,13 +51,14 @@ export default function Home() {
         }
     };
     
+
     // Use this function to load courses when needed
     useEffect(() => {
         fetchInstructorCourses();
     }, []);
 
     
-        useEffect(() => {
+    useEffect(() => {
         if (selectedCourseId !== null) {
             fetchStudents(selectedCourseId);
         }
@@ -62,33 +70,22 @@ export default function Home() {
 
     return(
         <>
-        {/* <Box sx={{display: "flex", flexWrap: "wrap",border: "2px solid white", margin: "80px", padding: "30px 30px 30px 30px",  gap:"7px"}}> */}
-            {/* <Stack direction="row" divider={<Divider orientation="vertical" flexItem />} spacing={2} useFlexGap sx={{ flexWrap: "wrap" }}>
-                {...components}
-            </Stack> */}
-            {/* <Typography></Typography>
-            <StudentList/>
-        </Box> */}
-
         {/* This is a template of the course dashboard to be implemented later */}
+
         <LeftSidebar />
         <Box sx={{display: "flex", flexWrap: "wrap", marginLeft: "100px", padding: "10px", gap:"7px"}}>
             <Box sx={{width: "100%", marginBottom: "20px"}}>
                 <Typography variant="h4">
-                    Hi Ms. Joumana!
+                    Welcome {session?.user?.name}!
                 </Typography>
                 {/* <Divider sx={{bgcolor: "black", border: "1px solid black", width: "400px", margin: ""}}/> */}
             </Box>
-            {/* {rows.map((row:any, index:number) => 
-                (<CourseCard key={index} onClick={()=>{handleCourseClick(row.course_id)}} row={row} />))
-            } */}
             {selectedCourseId === null ? (
                     courses.map((course, index)  => (
                         <CourseCard key={index} onClick={() => handleCourseClick((course as any).c_id)} row={course} />
                     ))
-                ) : (<StudentList students={students} />)
+                ) : (<StudentList students={students} course_id={selectedCourseId} />)
             }
-          
           <FormDialog/>
         </Box> 
                 

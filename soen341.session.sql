@@ -1,14 +1,13 @@
+USE SOEN341;
+
 -- Create a database in MySQL workbench (right click, create schema, double click to select the new db)
 -- Drop all tables to start fresh
-DROP SCHEMA IF EXISTS peer_assessment_app;
-CREATE SCHEMA peer_assessment_app;
-USE peer_assessment_app;
 
 -- TABLES
 -- Create instructors table
 CREATE TABLE instructors (
 	i_id INT AUTO_INCREMENT PRIMARY KEY,
-         VARCHAR(50) NOT NULL,
+    i_name VARCHAR(50) NOT NULL,
     i_email VARCHAR(50) UNIQUE NOT NULL,
     i_password VARCHAR(60) NOT NULL
 );

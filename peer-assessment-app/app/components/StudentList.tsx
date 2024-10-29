@@ -1,7 +1,7 @@
-import * as React from 'react';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import {useState} from 'react';
+import { DataGrid, GridColDef, GridRowSelectionModel } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
-// import getStudents from '@/app/api/student_list/route'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from '@mui/material';
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'ID', width: 70 },
@@ -33,7 +33,7 @@ const columns: GridColDef[] = [
 //   { id:9, s_id: 9, s_lastName: 'Roxie', s_firstName: 'Harvey', s_email:null },
 // ];
 
-const paginationModel = { page: 0, pageSize: 5 };
+// const paginationModel = { page: 0, pageSize: 5 };
 
 // interface rows {
 //   c_id:string,
@@ -52,9 +52,10 @@ interface Student{
 
 interface StudentListProps {
   students: Student[];
+  course_id: number | string
 }
 
-export default function StudentList({students}: StudentListProps) {
+export default function StudentList({students, course_id}: StudentListProps) {
   const rows = students.map((student, index) => {
     const fullname = student.s_name;
     const firstName  = fullname?fullname.split(' ',1)[0]:'';
@@ -66,7 +67,61 @@ export default function StudentList({students}: StudentListProps) {
       s_firstName: firstName,
       s_email: student.s_email,
     }
-});
+  });
+
+  const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
+  const [open, setOpen] = useState(false);
+  const [teamName, setTeamName] = useState<string>('');
+  
+  const handleCreateTeam = () => {
+    if (selectedRows.length === 0) {
+      alert('Select students');
+      return;
+    }
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleConfirm = () => {
+    const selectedStudents = selectedRows.map((id) => {
+      return rows.find(row => row.id === id);
+    });
+  
+
+    fetch('/api/create-team', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ students: selectedStudents, course_id: course_id, team_name:teamName}), // Convert the array to JSON
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('Success:', data);
+      alert('Team created successfully!');
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      alert('Failed to create team');
+    })
+    .finally(() => {
+      setOpen(false);
+      setSelectedRows([]);
+    });
+
+    
+  };
+
+  
+
 // if (!rows){
 //   rows   = [
 //       { id:1, s_id: 1, s_lastName: 'Snow', s_firstName: 'Jon', s_email: "snow.jon@got.com" },
@@ -93,15 +148,47 @@ export default function StudentList({students}: StudentListProps) {
   // ];
   
   return (
-    <Paper sx={{ height: "100%", width: '100%' }}>
+    <Paper sx={{ height: "100%", width: '100%', padding: "16px" }}>
+      <Typography variant="h6" gutterBottom>
+        Students
+        <Button variant="contained" color="primary" onClick={handleCreateTeam} sx={{ float: "right" }}>
+          Create Team
+        </Button>
+      </Typography>
       <DataGrid
         rows={rows}
         columns={columns}
-        initialState={{ pagination: { paginationModel } }}
         pageSizeOptions={[5, 10, 15, 25]}
         checkboxSelection
-        sx={{ border: 0,height: "100%", width: '100%' }}
+        onRowSelectionModelChange={(newSelection) => setSelectedRows(newSelection)}
+        sx={{ border: 0, height: "400px", width: '100%' }}
       />
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Team Summary</DialogTitle>
+        <DialogContent>
+          <Typography>Selected Students:</Typography>
+            <ul>
+              {selectedRows.map((id) => {
+                const student = rows.find(row => row.id === id);
+                return <li key={id}>{student?.s_firstName} {student?.s_lastName}</li>;
+              })}
+            </ul>
+            <TextField
+            autoFocus
+            margin="dense"
+            label="Team Name"
+            type="text"
+            fullWidth
+            variant="outlined"
+            value={teamName}
+            onChange={(e) => setTeamName(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleConfirm} color="primary">Confirm</Button>
+        </DialogActions>
+      </Dialog>
     </Paper>
   );
 }
