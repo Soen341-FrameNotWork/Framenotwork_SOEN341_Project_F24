@@ -1,32 +1,34 @@
 export interface IDBSettings {
-    host: string;
-    port: number;
-    user: string;
-    password: string;
-    database: string;
+    host: string,
+    port: number,
+    user: string,
+    password: string,
+    database: string
 }
 
 export default function GetDBSettings(): IDBSettings {
     const env = process.env.NODE_ENV;
 
-    console.log("host: ", process.env.host);
-    console.log("port: ", process.env.port);
-    console.log("user: ", process.env.user);
+    console.log('host: ', process.env.host);
+    console.log('port: ', process.env.port);
+    console.log('user: ', process.env.user);
 
-    if (env == "development") {
+    if (env == 'development') {
         return {
             host: process.env.host_dev!,
             port: parseInt(process.env.port_dev!),
             user: process.env.user_dev!,
             password: process.env.password_dev!,
             database: process.env.database_dev!,
-        };
-    } else
+        }
+    }
+    else
         return {
             host: process.env.host!,
             port: parseInt(process.env.port!),
             user: process.env.user!,
             password: process.env.password!,
             database: process.env.database!,
-        };
+
+        }
 }
