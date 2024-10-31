@@ -1,0 +1,33 @@
+Date: 24-10-2024
+Time: 100 minutes (during lab)
+
+Attendees:
+
+Bulat Abdullin 
+Jeremie Guerchon 
+Tymofiy Kovalenko 
+Jidapa Laopikanon 
+Evan Teboul 
+Mathieu Pare Vargas 
+
+1. Review of Previous Sprint
+- Discussed what we have achieved so far (ex: login system for both student and instructor)
+- Since the functionality to create teams and assign students to groups wasn't completed in sprint 1, it will have to be for sprint 2
+- Analyzed comments left by the TA during the previous lab and on Moodle, these aspects will have to be improved:
+  - More detailed user stories (priority level as labels, due dates)
+  - Have tasks as their own issues instead of simply a list in user stories (with estimated efforts)
+  - Add acceptance criteria
+  - Add a detailed contribution log as a separate file in Excel (with dates and time spent)
+  - Add more details to the burndown chart 
+  - Create a database diagram
+
+2. Sprint Goals
+Define Objectives:
+- Implement the functionality for instructors to create teams and assign students to groups (teams visible)
+- Develop interfaces for students to select their teammates for evaluation using a 5-point scale for the Cooperation dimension with a Confirm page and optional comment boxes
+- If time permits, do the same for Conceptual Contribution, Practical Contribution and Work Ethic
+- Make improvements to the project based on the TA's comments mentioned above
+
+3. Task Breakdown
+- Observed the sprint plan 2 and assigned tasks to team members: 
+  Tymofiy and Jidapa will focus on the documentation (GitHub and Sprint planning) while Bulat, Jeremie, Evan and Mathieu will focus more on implementing the features for this sprint.
