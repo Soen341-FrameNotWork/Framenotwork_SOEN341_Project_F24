@@ -121,11 +121,10 @@ export default function SignUp({ onClick }: SignUpProps) {
 
         const data = new FormData(event.currentTarget);
         const formData = {
-            firstName: data.get('firstName'),
-            lastName: data.get('lastName'),
+            fullName: data.get('fullName'),
             email: data.get('email'),
             password: data.get('password'),
-            userType,
+            userType: userType,
         };
 
         try {
@@ -199,28 +198,14 @@ export default function SignUp({ onClick }: SignUpProps) {
                         <StudentInstructorToggle onChange={handleUserTypeChange} userType={userType} />
                     </FormControl>
                     <FormControl>
-                        <FormLabel htmlFor="name">First name</FormLabel>
+                        <FormLabel htmlFor="name">Full name</FormLabel>
                         <TextField
-                            autoComplete="firstName"
-                            name="firstName"
+                            autoComplete="fullName"
+                            name="fullName"
                             required
                             fullWidth
-                            id="firstName"
-                            placeholder="John"
-                            error={nameError}
-                            helperText={nameErrorMessage}
-                            color={nameError ? 'error' : 'primary'}
-                        />
-                    </FormControl>
-                    <FormControl>
-                        <FormLabel htmlFor="name">Last name</FormLabel>
-                        <TextField
-                            autoComplete="lastName"
-                            name="lastName"
-                            required
-                            fullWidth
-                            id="lastName"
-                            placeholder="Smith"
+                            id="fullName"
+                            placeholder="John Smith"
                             error={nameError}
                             helperText={nameErrorMessage}
                             color={nameError ? 'error' : 'primary'}
