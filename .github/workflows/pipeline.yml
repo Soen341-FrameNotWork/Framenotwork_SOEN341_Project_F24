@@ -1,0 +1,43 @@
+name: Lint and Build Next.js Project
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint-and-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22.9.0'
+
+      - name: Install dependencies
+        working-directory: peer-assessment-app
+        run: npm install
+
+      - name: Lint the code
+        working-directory: peer-assessment-app
+        run: npm run lint
+
+      - name: Type Check
+        working-directory: peer-assessment-app
+        run: npm run type-check
+
+      - name: Format Code with Prettier
+        working-directory: peer-assessment-app
+        run: npm run format:check || echo "Prettier found issues, but continuing without failing the job."
+
+
+      - name: Build the project
+        working-directory: peer-assessment-app
+        run: npm run build
