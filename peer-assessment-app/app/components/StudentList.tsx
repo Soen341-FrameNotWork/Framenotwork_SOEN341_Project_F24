@@ -26,12 +26,12 @@ interface StudentListProps {
 
 export default function StudentList({students, course_id}: StudentListProps) {
   console.log(students);
-  const rows = students.map((student, index) => {
+  const rows = students.map((student) => {
     const fullname = student.s_name;
     const firstName  = fullname?fullname.split(' ',1)[0]:'';
     const lastName = fullname?fullname.split(' ').slice(1).join(' '):'';
     return {
-      id: index,
+      id: student.s_id,
       s_id: student.s_id,
       lastName: lastName,
       firstName: firstName,
@@ -56,19 +56,15 @@ export default function StudentList({students, course_id}: StudentListProps) {
     setOpen(false);
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = (e:any) => {
+    e.preventDefault();
 
-    console.log('selected rows: ',selectedRows);
-
-    const selectedStudents = selectedRows.map((selected_row) => {
-      return rows.find(row => row.s_id === selected_row);
-    }
-
-
-  
-  
-  );
-  
+    const selectedStudents = selectedRows.map((id) => {
+      // console.log('id: ',id);
+      return rows.find((row) => row.s_id === id);
+    });
+    console.log("selected Students: ",selectedStudents);
+    console.log("req body: ",JSON.stringify({ students: selectedStudents, course_id: course_id, team_name:teamName})); // Convert the array to JSON)
 
     fetch('/api/create-team', {
       method: 'POST',
@@ -85,6 +81,7 @@ export default function StudentList({students, course_id}: StudentListProps) {
     })
     .then(data => {
       console.log('Success:', data);
+      setSelectedRows([]);
       alert('Team created successfully!');
     })
     .catch((error) => {
@@ -93,10 +90,7 @@ export default function StudentList({students, course_id}: StudentListProps) {
     })
     .finally(() => {
       setOpen(false);
-      setSelectedRows([]);
     });
-
-    
   };
 
   

@@ -15,12 +15,15 @@ interface RequestParams{
     team_name:string
 }
 
-export async function POST(req: NextApiRequest) {
+export async function POST(req: Request) {
     try {
-        const { students, course_id, team_name }: RequestParams = req.body;
+        // console.log(req);
+        const body = await req.json();
+        const { students, course_id, team_name }: RequestParams = body;
+        console.log("students",students);
 
         if (!students || !course_id || !team_name) {
-            return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+            return  NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
         }
 
         if (students.length === 0) {
@@ -41,14 +44,21 @@ export async function POST(req: NextApiRequest) {
 
             // Get the newly inserted team's ID
             const teamId = (teamResult as mysql.ResultSetHeader).insertId;
+            
+            console.log("teamID: ",teamId);
 
             // Prepare values for inserting into team_student
-            const studentValues = students.map(studentId => [teamId, studentId]);
+            // const studentValues = students.map(studentId => [teamId, studentId]);
+            const studentValues = students.map(student => [teamId, student?.s_id]);
+
+            const placeholders = studentValues.map(() => "(?, ?)").join(", ");
+
+            const flattenedValues = studentValues.flat();
 
             // Insert student-team associations
             await db.query(
-                "INSERT INTO team_student (team_id, student_id) VALUES ?",
-                [studentValues]
+                `INSERT INTO team_student (team_id, student_id) VALUES ${placeholders};`,
+                flattenedValues
             );
 
             // Commit the transaction
