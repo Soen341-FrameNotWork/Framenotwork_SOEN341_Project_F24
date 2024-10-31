@@ -4,19 +4,11 @@ import Paper from '@mui/material/Paper';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from '@mui/material';
 
 const columns: GridColDef[] = [
-  { field: 'id', headerName: 'ID', width: 70 },
+
   { field: 'firstName', headerName: 'First name', width: 130 },
   { field: 'lastName', headerName: 'Last name', width: 130},
-  {
-    field: 'fullName',
-    headerName: 'Full name',
-    description: 'This column has a value getter and is not sortable.',
-    sortable: false,
-    width: 160,
-    valueGetter: (value, row) => `${row.s_firstName || ''} ${row.s_lastName || ''}`,
-  },
+  { field: 's_id', headerName: 'Student ID', width: 130 },
   { field: 'email', headerName: 'Email', width: 200 },
-
 ];
 
 
@@ -56,6 +48,7 @@ interface StudentListProps {
 }
 
 export default function StudentList({students, course_id}: StudentListProps) {
+  console.log(students);
   const rows = students.map((student, index) => {
     const fullname = student.s_name;
     const firstName  = fullname?fullname.split(' ',1)[0]:'';
@@ -63,9 +56,10 @@ export default function StudentList({students, course_id}: StudentListProps) {
     return {
       id:index,
       s_id: student.s_id,
-      s_lastName: lastName,
-      s_firstName: firstName,
-      s_email: student.s_email,
+      lastName: lastName,
+      firstName: firstName,
+      email: student.s_email,
+      s_name:fullname
     }
   });
 
@@ -170,7 +164,7 @@ export default function StudentList({students, course_id}: StudentListProps) {
             <ul>
               {selectedRows.map((id) => {
                 const student = rows.find(row => row.id === id);
-                return <li key={id}>{student?.s_firstName} {student?.s_lastName}</li>;
+                return <li key={id}>{student?.s_name}</li>;
               })}
             </ul>
             <TextField

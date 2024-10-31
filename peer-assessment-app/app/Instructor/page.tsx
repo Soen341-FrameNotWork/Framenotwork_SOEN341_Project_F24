@@ -45,20 +45,24 @@ export default function Home() {
                 throw new Error('Failed to fetch courses');
             }
             const data = await response.json();
+            console.log(data);
             setCourses(data);
         } catch (error) {
             console.error('Error fetching courses:', error);
         }
     };
+
+    useEffect(()=>{
+        fetch('/api/protected')
+        .then((res) => res.json())
+        .then((data) => setSession(data))
+        .catch((error) => console.error('Error fetching session:', error));
+    },[]);
     
 
     // Use this function to load courses when needed
     useEffect(() => {
         fetchInstructorCourses();
-        fetch('/api/protected')
-        .then((res) => res.json())
-        .then((data) => setSession(data))
-        .catch((error) => console.error('Error fetching session:', error));
     }, []);
 
     
