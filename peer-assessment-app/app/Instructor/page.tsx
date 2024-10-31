@@ -5,7 +5,7 @@ import CourseCard from "../components/CourseCard"
 import StudentList from "../components/StudentList";
 import LeftSidebar from "../components/LeftSidebar";
 import { Typography } from "@mui/material";
-import FormDialog from "../components/ClassCreation";
+// import FormDialog from "../components/ClassCreation";
 import { useEffect, useState } from "react";
 import { Session } from "next-auth";
 
@@ -18,12 +18,12 @@ export default function Home() {
     const [courses, setCourses] = useState([]);
     const [session, setSession] = useState<Session | null>(null);
 
-    useEffect(() => {
-        fetch('/api/protected')
-        .then((res) => res.json())
-        .then((data) => setSession(data))
-        .catch((error) => console.error('Error fetching session:', error));
-    }, []);
+    // useEffect(() => {
+    //     fetch('/api/protected')
+    //     .then((res) => res.json())
+    //     .then((data) => setSession(data))
+    //     .catch((error) => console.error('Error fetching session:', error));
+    // }, []);
 
     const fetchStudents = async (courseId: any) => {
         try {
@@ -55,6 +55,10 @@ export default function Home() {
     // Use this function to load courses when needed
     useEffect(() => {
         fetchInstructorCourses();
+        fetch('/api/protected')
+        .then((res) => res.json())
+        .then((data) => setSession(data))
+        .catch((error) => console.error('Error fetching session:', error));
     }, []);
 
     
@@ -86,7 +90,7 @@ export default function Home() {
                     ))
                 ) : (<StudentList students={students} course_id={selectedCourseId} />)
             }
-          <FormDialog/>
+          {/* <FormDialog/> */}
         </Box> 
                 
         
