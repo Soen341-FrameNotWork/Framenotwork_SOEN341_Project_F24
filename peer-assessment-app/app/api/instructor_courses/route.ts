@@ -8,11 +8,18 @@ export async function GET() {
   try {
     const session = await getServerSession(authOptions);
 
-    if (!session || !session.user || session.user.role !== 'instructor') {
+    if (!session || !session.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-
-    const query = 'SELECT * FROM courses WHERE instructor_id = ?';
+    let query = '';
+    console.log('role: ',session.user.role);
+    if (session.user.role == 'instructor'){
+      query = 'SELECT * FROM courses WHERE instructor_id = ?';
+    }
+    else{
+      query = 'select * from courses C, (SELECT course_id FROM course_student WHERE student_id = ?) as CS WHERE CS.course_id = C.c_id;';
+    }
+    
     const db = await mysql.createConnection(GetDBSettings());
 
     try {

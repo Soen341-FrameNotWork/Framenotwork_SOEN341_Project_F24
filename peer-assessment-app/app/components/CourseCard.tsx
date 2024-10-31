@@ -30,7 +30,7 @@ export default function CourseCard({onClick, row}:CourseCardProp) {
           {/* <Typography variant="body2" sx={{ color: 'text.secondary' }}>
             Info on the course.
           </Typography> */}
-          <Avatar sx={{ bgcolor:"", margin: "5px", float: "right"}}></Avatar>
+          <Avatar sx={{margin: "5px", float: "right"}}></Avatar>
         </CardContent>
       </CardActionArea>
     </Card>
@@ -49,7 +49,7 @@ export default function CourseCard({onClick, row}:CourseCardProp) {
 
 
 
-// return <>{courseCards}</>;
+// return <>{courseCards}</>;g
 //   const [data,setData] = useState<any>(null);
 //   const fetchData = () => {
 //     const courses = CourseData();

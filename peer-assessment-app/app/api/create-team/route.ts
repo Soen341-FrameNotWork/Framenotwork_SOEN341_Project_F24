@@ -49,15 +49,15 @@ export async function POST(req: Request) {
 
             // Prepare values for inserting into team_student
             // const studentValues = students.map(studentId => [teamId, studentId]);
-            const studentValues = students.map(student => [teamId, student?.s_id]);
+            const studentValues = students.map(student => [teamId, student?.s_id, course_id]);
 
-            const placeholders = studentValues.map(() => "(?, ?)").join(", ");
+            const placeholders = studentValues.map(() => "(?, ?, ?)").join(", ");
 
             const flattenedValues = studentValues.flat();
 
             // Insert student-team associations
             await db.query(
-                `INSERT INTO team_student (team_id, student_id) VALUES ${placeholders};`,
+                `INSERT INTO team_student (team_id, student_id, course_id) VALUES ${placeholders};`,
                 flattenedValues
             );
 

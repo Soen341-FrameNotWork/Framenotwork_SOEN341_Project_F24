@@ -3,12 +3,13 @@ import { authOptions } from '../auth/[...nextauth]/route'; // Adjust path if nec
 import { getServerSession } from 'next-auth/next';
 import { NextResponse } from 'next/server';
 
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function GET(_req: NextApiRequest) {
   try {
     // Ensure both req and res are passed to getServerSession
     const session = await getServerSession(authOptions);
-    console.log(session);
+    console.log("session: ",session);
 
     if (!session) {
       return NextResponse.json({ message: "You must be logged in." }, { status: 401 });
