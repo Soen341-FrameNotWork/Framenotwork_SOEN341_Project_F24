@@ -6,6 +6,7 @@
 * [Team members](#team-members)
 * [Installation](#installation)
 * [Known issues and limitations](#known-issues-and-limitations)
+* [Links](#links)
 
 ## Introduction
 Working in teams is often emphasized in academic settings to help students develop collaboration and co-working skills, which are essential for their future careers. However, a common issue arises when the workload is not distributed equally among team members. This imbalance can lead to a situation where one student ends up contributing significantly more than others, yet all members receive the same grade. This scenario is unfair and can cause frustration and resentment, as it rewards those who may have put in minimal effort while undervaluing the hard work and dedication of those who carried the project. Such dynamics hinder personal growth and undermine the purpose of team-based learning. This application serves as a solution to this issue. It is designed for students to evaluate their teammates in university team projects on their contribution and performance based on their cooperation, conception contribution, practical contribution and work ethic. Instructors will also be able to access the anonymous feedbacks and form teams.
@@ -39,3 +40,11 @@ Name/ GitHub Username > roles
 ## Known issues and limitations
 
 None are known at this time.
+
+## Links
+
+* [Excel](https://docs.google.com/spreadsheets/d/1-OOdwkd-mQhx8gZGerOM8dGRp2eyIZ9y7WHTsZLbgnE/edit?gid=559965967#gid=559965967)
+* [Burndow Chart](https://docs.google.com/spreadsheets/d/1-OOdwkd-mQhx8gZGerOM8dGRp2eyIZ9y7WHTsZLbgnE/edit?gid=559965967#gid=559965967)
+* [Contribution Log](https://docs.google.com/spreadsheets/d/1-OOdwkd-mQhx8gZGerOM8dGRp2eyIZ9y7WHTsZLbgnE/edit?gid=1048892060#gid=1048892060)  
+* [Database Diagram](https://github.com/Soen341-FrameNotWork/Framenotwork_SOEN341_Project_F24/blob/main/images/ERD.png)
+* [Meeting minutes](https://github.com/Soen341-FrameNotWork/Framenotwork_SOEN341_Project_F24/tree/main/Meeting%20Minutes)
