@@ -25,7 +25,7 @@ export default function CourseCard({onClick, row}:CourseCardProp) {
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
             {row.c_name}
-            <Divider sx={{marginBottom: "10px", border: "1px solid", width: "120px"}}/>
+            <Divider sx={{marginBottom: "5px", border: "1px solid", width: "120px"}}/>
           </Typography>
           {/* <Typography variant="body2" sx={{ color: 'text.secondary' }}>
             Info on the course.

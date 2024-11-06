@@ -10,8 +10,9 @@ export const authOptions: NextAuthOptions = {
     session: {
         strategy: "jwt",
     },
-    pages: {
-        signIn: "/login",
+    pages:{
+        signIn: '@/app/signin',
+        signOut: '@/app/signin',
     },
     secret: process.env.NEXTAUTH_SECRET,
     callbacks:{
@@ -24,9 +25,7 @@ export const authOptions: NextAuthOptions = {
             return token;
         },
         async session({session, token}){
-            if (!session.user) {
-                session.user = {}; // Initialize session.user if it doesn't exist
-            }
+
             if (token) {
                 session.user.id = token.id as string;
                 session.user.role = token.role as string;

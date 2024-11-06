@@ -7,10 +7,12 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 export async function GET() {
   try {
     const session = await getServerSession(authOptions);
+    console.log('session: ',session);
 
     if (!session || !session.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
+    
     let query = '';
     console.log('role: ',session.user.role);
     if (session.user.role == 'instructor'){

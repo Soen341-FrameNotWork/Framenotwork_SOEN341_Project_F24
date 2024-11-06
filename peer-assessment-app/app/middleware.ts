@@ -1,27 +1,35 @@
-import { NextResponse } from 'next/server';
+
 import { getToken } from 'next-auth/jwt';
+import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export async function middleware(req: NextRequest) {
-    // console.log(process.env.NEXTAUTH_SECRET);
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-    // console.log(process.env.NEXTAUTH_SECRET);
+    // Get the token from the request
+    const token = await getToken({ req });
 
-    // If no token is found, redirect to login page
+    const { pathname } = req.nextUrl;
+
+    // If no token is found and the user is trying to access a protected route, redirect to signin
+    if (!token && pathname !== '/signin') {
+        return NextResponse.redirect(new URL('/signin', req.url));
+    }
+
+    // If user is logged in, check their role and redirect accordingly
     if (token) {
-        // Check user role from token
-        const userRole = (token.user as any).role;
+        const userRole = (token.user as any)?.role;
 
-        if (userRole === 'instructor') {
+        if (userRole === 'instructor' && pathname !== '/Instructor') {
             return NextResponse.redirect(new URL('/Instructor', req.url));
-        } else {
+        } else if (userRole === 'student' && pathname !== '/Student') {
             return NextResponse.redirect(new URL('/Student', req.url));
         }
     }
 
-    
+    // If no redirection is needed, continue with the request
+    return NextResponse.next();
 }
 
+// Specify which routes the middleware should apply to
 export const config = {
-  matcher: '/',
+    matcher: ['/', '/Instructor', '/Student'], // Add more routes as needed
 };
