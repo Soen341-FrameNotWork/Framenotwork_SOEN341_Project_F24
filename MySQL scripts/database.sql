@@ -73,7 +73,7 @@ CREATE TABLE ratings (
     reviewing_id INT NOT NULL, -- Who is reviewing
     criteria_id INT NOT NULL,
     course_id INT NOT NULL,
-    score INT NOT NULL CHECK (score >=1 AND score <= 7),
+    score INT NOT NULL CHECK (score >=1 AND score <= 5),
 
     FOREIGN KEY (reviewed_id) REFERENCES students(s_id),
     FOREIGN KEY (reviewing_id) REFERENCES students(s_id),
