@@ -23,9 +23,8 @@ interface ColumnData {
   width?: number;
 }
 
-// const chance = new Chance(42);
 
-const chance = {
+const chance = { 
     s_id: 40000000,
     firstName: "Mathieu",
     lastName: "Pare",
