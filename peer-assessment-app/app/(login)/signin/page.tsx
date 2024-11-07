@@ -13,7 +13,7 @@ import Stack from '@mui/material/Stack';
 import Card from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import Image from 'next/image';
-import StudentInstructorToggle from './student_instructor_toggle';
+import StudentInstructorToggle from '../student_instructor_toggle';
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation'
@@ -143,19 +143,27 @@ export default function SignIn({ onClick }: SignInProps) {
             password: data.get('password'),
             userType: userType,
         });
-
+        
         if (!result || result.error) {
             console.error('Failed to sign in');
+            setPasswordError(true);
+            setPasswordErrorMessage('Email or Password is incorrect');
             return;
         } else {
             console.log('Signed in');
-            if (data.get('userType') === 'student') {
-                router.push('/Student');
-            } else if (data.get('userType') === 'instructor') {
-                router.push('/Instructor');
-            }
-        }
+            const session = await fetch("/api/auth/session").then((res) => res.json());
+            console.log('session: ',session);
 
+            if (session?.user?.id && session?.user?.role) {
+                if (session.user.role === "student") {
+                  // Redirect student to their dashboard
+                  router.push(`/Student`);
+                } else if (session.user.role === "instructor") {
+                  // Redirect instructor to their dashboard
+                  router.push(`/Instructor`);
+                }
+              }
+        }
     }
 
     const validateInputs = () => {
@@ -273,7 +281,7 @@ export default function SignIn({ onClick }: SignInProps) {
                             component="button"
                             variant="body2"
                             sx={{ alignSelf: 'center' }}
-                            onClick={onClick}
+                            onClick={()=> router.push('../signup')}
                         >
                             Sign up
                         </Link>
