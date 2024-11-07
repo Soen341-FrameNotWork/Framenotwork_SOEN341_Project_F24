@@ -6,6 +6,8 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+
+// @ts-expect-error: Suppressing expected error on the next line due to it being in development
 import createCourse from 'app/api/add-course/route';
 
 
