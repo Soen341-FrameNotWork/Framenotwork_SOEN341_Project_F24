@@ -11,9 +11,9 @@ import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import Image from 'next/image';
-import StudentInstructorToggle from './student_instructor_toggle';
+import StudentInstructorToggle from '../student_instructor_toggle';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation'
+import {useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react';
 
 
@@ -36,26 +36,8 @@ const Card = styled(MuiCard)(({ theme }) => ({
     }),
 }));
 
-// const SignUpContainer = styled(Stack)(({ theme }) => ({
-//   height: '100%',
-//   padding: 4,
-//   backgroundImage:
-//     'radial-gradient(ellipse at 50% 50%, hsl(210, 100%, 97%), hsl(0, 0%, 100%))',
-//   backgroundRepeat: 'no-repeat',
-//   ...theme.applyStyles('dark', {
-//     backgroundImage:
-//       'radial-gradient(at 50% 50%, hsla(210, 100%, 16%, 0.5), hsl(220, 30%, 5%))',
-//   }),
-// }));
-interface SignUpProps {
-    onClick: () => void;
-}
 
-export default function SignUp({ onClick }: SignUpProps) {
-    //   const [mode, setMode] = React.useState<PaletteMode>('light');
-    //   const [showCustomTheme, setShowCustomTheme] = React.useState(true);
-    //   const defaultTheme = createTheme({ palette: { mode } });
-    //   const SignUpTheme = createTheme(getSignUpTheme(mode));
+export default function SignUp() {
     const [emailError, setEmailError] = React.useState(false);
     const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
     const [passwordError, setPasswordError] = React.useState(false);
@@ -63,18 +45,14 @@ export default function SignUp({ onClick }: SignUpProps) {
     const [nameError, setNameError] = React.useState(false);
     const [nameErrorMessage, setNameErrorMessage] = React.useState('');
     const [registrationError, setRegistrationError] = React.useState('');
-
-    const router = useRouter();
     const [userType, setUserType] = useState<'student' | 'instructor'>('student');
-    // const [formData, setFormData] = useState({
-    //     firstName: '',
-    //     lastName: '',
-    //     email: '',
-    //     password: '',
-    // });
+    const router = useRouter();
 
 
-
+    const onClick = () => {
+        router.push('../signin');
+    }
+    
     const validateInputs = () => {
         const email = document.getElementById('email') as HTMLInputElement;
         const password = document.getElementById('password') as HTMLInputElement;
@@ -121,11 +99,10 @@ export default function SignUp({ onClick }: SignUpProps) {
 
         const data = new FormData(event.currentTarget);
         const formData = {
-            firstName: data.get('firstName'),
-            lastName: data.get('lastName'),
+            fullName: data.get('fullName'),
             email: data.get('email'),
             password: data.get('password'),
-            userType,
+            userType: userType,
         };
 
         try {
@@ -199,28 +176,14 @@ export default function SignUp({ onClick }: SignUpProps) {
                         <StudentInstructorToggle onChange={handleUserTypeChange} userType={userType} />
                     </FormControl>
                     <FormControl>
-                        <FormLabel htmlFor="name">First name</FormLabel>
+                        <FormLabel htmlFor="name">Full name</FormLabel>
                         <TextField
-                            autoComplete="firstName"
-                            name="firstName"
+                            autoComplete="fullName"
+                            name="fullName"
                             required
                             fullWidth
-                            id="firstName"
-                            placeholder="John"
-                            error={nameError}
-                            helperText={nameErrorMessage}
-                            color={nameError ? 'error' : 'primary'}
-                        />
-                    </FormControl>
-                    <FormControl>
-                        <FormLabel htmlFor="name">Last name</FormLabel>
-                        <TextField
-                            autoComplete="lastName"
-                            name="lastName"
-                            required
-                            fullWidth
-                            id="lastName"
-                            placeholder="Smith"
+                            id="fullName"
+                            placeholder="John Smith"
                             error={nameError}
                             helperText={nameErrorMessage}
                             color={nameError ? 'error' : 'primary'}
