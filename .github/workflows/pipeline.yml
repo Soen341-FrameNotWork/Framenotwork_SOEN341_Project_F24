@@ -1,4 +1,4 @@
-name: Lint and Build Next.js Project
+name: Lint, Build, and Test Next.js Project
 
 on:
   push:
@@ -9,8 +9,22 @@ on:
       - main
 
 jobs:
-  lint-and-build:
+  lint-build-test:
     runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: password123
+          MYSQL_DATABASE: peer_assessment_app
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+        ports:
+          - 3306:3306
 
     steps:
       - name: Checkout repository
@@ -37,7 +51,31 @@ jobs:
         working-directory: peer-assessment-app
         run: npm run format:check || echo "Prettier found issues, but continuing without failing the job."
 
+      - name: Wait for MySQL to be ready
+        run: |
+          until mysqladmin ping -h 127.0.0.1 --silent; do
+            echo "Waiting for MySQL to be ready..."
+            sleep 2
+          done
+
+      - name: Run database migrations
+        working-directory: peer-assessment-app
+        env:
+          MYSQL_PWD: password123
+        run: |
+          mysql -h 127.0.0.1 -u root peer_assessment_app < setup.sql
+
+      # - name: Run tests
+      #   working-directory: peer-assessment-app
+      #   env:
+      #     DB_HOST: 127.0.0.1
+      #     DB_PORT: 3306
+      #     DB_USER: root
+      #     DB_PASSWORD: password123
+      #     DB_DATABASE: peer_assessment_app
+      #   run: npm test
 
       - name: Build the project
         working-directory: peer-assessment-app
         run: npm run build
+
