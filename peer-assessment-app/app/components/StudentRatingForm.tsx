@@ -72,7 +72,7 @@ const RatingForm: React.FC = () => {
           step={1}
           marks
           min={0}
-          max={7}
+          max={5}
         />
       </Box>
 
@@ -88,7 +88,7 @@ const RatingForm: React.FC = () => {
           step={1}
           marks
           min={0}
-          max={7}
+          max={5}
         />
       </Box>
 
@@ -104,7 +104,7 @@ const RatingForm: React.FC = () => {
           step={1}
           marks
           min={0}
-          max={7}
+          max={5}
         />
       </Box>
 
