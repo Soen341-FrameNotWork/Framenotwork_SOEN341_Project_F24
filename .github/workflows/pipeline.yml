@@ -63,7 +63,8 @@ jobs:
         env:
           MYSQL_PWD: password123
         run: |
-          mysql -h 127.0.0.1 -u root peer_assessment_app < setup.sql
+          mysql -h 127.0.0.1 -u root peer_assessment_app < ../MySQL\ scripts/database.sql
+          mysql -h 127.0.0.1 -u root peer_assessment_app < ../MySQL\ scripts/db_population.sql
 
       # - name: Run tests
       #   working-directory: peer-assessment-app
