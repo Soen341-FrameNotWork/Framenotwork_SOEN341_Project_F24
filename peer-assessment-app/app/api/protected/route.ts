@@ -1,11 +1,10 @@
-import { NextApiRequest } from 'next';
-import { authOptions } from '../auth/[...nextauth]/route'; // Adjust path if necessary
+import { authOptions } from "@/app/utils/authOptions";
 import { getServerSession } from 'next-auth/next';
 import { NextResponse } from 'next/server';
 
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function GET(_req: NextApiRequest) {
+export async function GET(_req: Request) {
   try {
     // Ensure both req and res are passed to getServerSession
     const session = await getServerSession(authOptions);
@@ -30,7 +29,7 @@ export async function GET(_req: NextApiRequest) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function POST(req: NextApiRequest) {
+export async function POST(req: Request) {
   try {
     // Ensure both req and res are passed to getServerSession
     const session = await getServerSession(authOptions);

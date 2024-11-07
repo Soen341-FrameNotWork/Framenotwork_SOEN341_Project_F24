@@ -2,8 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import mysql from 'mysql2/promise';
 import GetDBSettings from '@lib/db';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-
+import { authOptions } from "@/app/utils/authOptions";
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
