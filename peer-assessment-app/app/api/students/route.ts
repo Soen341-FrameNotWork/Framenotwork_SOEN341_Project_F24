@@ -3,6 +3,11 @@ import mysql from 'mysql2/promise';
 import GetDBSettings from '@lib/db';
 import { getServerSession } from 'next-auth';
 import { authOptions } from "@/app/utils/authOptions";
+
+// Marking this as a dynamic route to disable static optimization
+export const dynamic = 'force-dynamic';
+
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);

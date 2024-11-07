@@ -4,6 +4,10 @@ import GetDBSettings from '@lib/db';
 import { getServerSession } from 'next-auth';
 import { authOptions } from "@/app/utils/authOptions";
 
+// Marking this as a dynamic route to disable static optimization
+export const dynamic = 'force-dynamic';
+
+
 export async function GET() {
   try {
     const session = await getServerSession(authOptions);
