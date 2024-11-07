@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Slider, Box, Typography, Button } from '@mui/material';
-import { borderRadius, fontFamily, padding, styled } from '@mui/system';
+import { styled } from '@mui/system';
 import grey from '@mui/material/colors/grey';
 
 interface Ratings {
