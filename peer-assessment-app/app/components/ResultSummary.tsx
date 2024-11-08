@@ -100,20 +100,27 @@ const columns: ColumnData[] = [
 const rows: Data[] = Array.from({ length: 100 }, () => createData());
 
 const VirtuosoTableComponents: TableComponents<Data> = {
+  // eslint-disable-next-line react/display-name
   Scroller: React.forwardRef<HTMLDivElement>((props, ref) => (
     <TableContainer component={Paper} {...props} ref={ref} />
   )),
   Table: (props) => (
     <Table {...props} sx={{ borderCollapse: 'separate', tableLayout: 'fixed' }} />
   ),
+  // eslint-disable-next-line react/display-name
   TableHead: React.forwardRef<HTMLTableSectionElement>((props, ref) => (
     <TableHead {...props} ref={ref} />
   )),
   TableRow,
+  // eslint-disable-next-line react/display-name
   TableBody: React.forwardRef<HTMLTableSectionElement>((props, ref) => (
     <TableBody {...props} ref={ref} />
   )),
+  
 };
+
+
+
 
 function fixedHeaderContent() {
   return (
