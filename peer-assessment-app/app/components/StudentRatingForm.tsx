@@ -165,7 +165,7 @@ const RatingForm: React.FC<RatingFormProps> = ({ teammates }) => {
             max={5}
           />
           <TextField
-            label="Comment you choice"
+            label="Comment your choice"
             variant="outlined"
             fullWidth
             multiline
