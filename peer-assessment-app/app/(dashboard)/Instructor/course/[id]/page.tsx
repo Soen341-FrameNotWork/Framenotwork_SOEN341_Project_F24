@@ -1,6 +1,6 @@
 'use client';
 import StudentList from "@/app/components/StudentList";
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home({params}: {params: {id: string}}) {
     const [students, setStudents] = useState([]);
@@ -21,7 +21,7 @@ export default function Home({params}: {params: {id: string}}) {
     
 
     // Use this function to load courses when needed
-    useMemo(() => {
+    useEffect(() => {
         fetchStudents(course_id);
     }, [course_id]);
 

@@ -1,4 +1,4 @@
-@tailwind base;
+/* @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -14,13 +14,16 @@
   }
 }
 
-body {
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-}
+
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+} */
+
+body {
+  /* background: var(--background);
+  font-family: Arial, Helvetica, sans-serif; */
+  margin: 0;
 }
