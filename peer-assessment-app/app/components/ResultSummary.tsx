@@ -23,7 +23,7 @@ interface ColumnData {
   width?: number;
 }
 
-
+// TODO: Change to db data
 const chance = { 
     s_id: 40000000,
     firstName: "Mathieu",
@@ -123,7 +123,6 @@ function fixedHeaderContent() {
           key={column.dataKey}
           variant="head"
           align= {'center'}
-          style={{  }}
           sx={{ backgroundColor: '#7f7f7f' }}
         >
           {column.label}

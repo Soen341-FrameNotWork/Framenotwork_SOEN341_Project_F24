@@ -1,12 +1,16 @@
 'use client'
-import BasicTabs from "../components/Tabs";
+import InstructorTabs from "../components/InstructorTabs";
+import Navbar from "../components/Navbar";
+import StudentTabs from "../components/StudentTabs";
 
 export default function Home() {
 
 
     return (
         <>
-            <BasicTabs/>
+            <Navbar/>
+            <InstructorTabs/>
+            {/* <StudentTabs/> */}
         </>
     );
 }

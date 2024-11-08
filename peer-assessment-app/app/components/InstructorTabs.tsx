@@ -33,7 +33,7 @@ function a11yProps(index: number) {
   };
 }
 
-export default function BasicTabs() {
+export default function InstructorTabs() {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -47,7 +47,6 @@ export default function BasicTabs() {
             value={value} 
             onChange={handleChange} 
             textColor='inherit'
-            sx={{"&.MuiTabs-indicator": {color: "red"}}}
             aria-label="secondary tabs example"
         >
           <Tab label="Student List" {...a11yProps(0)} />
