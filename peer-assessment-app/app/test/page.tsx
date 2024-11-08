@@ -1,5 +1,5 @@
 'use client'
-import InstructorTabs from "../components/InstructorTabs";
+import InstructorTabs from "../(dashboard)/Instructor/components/InstructorTabs";
 import Navbar from "../components/Navbar";
 // import StudentTabs from "../components/StudentTabs";
 
