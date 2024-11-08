@@ -17,7 +17,6 @@ export default function Navbar() {
             Concordia University
           </Typography>
           <Button sx={{ marginLeft: 'auto', color: 'white' }} onClick={handleSignOut}>
-
             Sign out
           </Button>
         </Toolbar>

@@ -1,8 +1,8 @@
-import * as React from 'react';
+import { useEffect, useState } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import ReactVirtualizedTable from './ResultSummary';
+import StudentList from '@/app/components/StudentList';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -33,12 +33,33 @@ function a11yProps(index: number) {
   };
 }
 
-export default function InstructorTabs() {
-  const [value, setValue] = React.useState(0);
+export default function StudentTabs({courseId}: {courseId: number}) {
+  const [value, setValue] =useState(0);
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
+  const [students, setStudents] = useState([]);
+  const course_id = courseId;
+
+  const fetchStudents = async (course_id:number) => {
+      try {
+          const response = await fetch(`/api/students?courseId=${course_id}`);
+          if (!response.ok) {
+              throw new Error('Failed to fetch students');
+          }
+          const data = await response.json();
+          setStudents(data);
+      } catch (error) {
+          console.error('Error fetching students:', error);
+      }
+  };
+
+  useEffect(() => {
+      fetchStudents(course_id);
+  }, [course_id]);
+
 
   return (
     <Box sx={{ width: '100%'}}>
@@ -51,19 +72,14 @@ export default function InstructorTabs() {
         >
           <Tab label="Student List" {...a11yProps(0)} />
           <Tab label="Teams" {...a11yProps(1)} />
-          <Tab label="Results Summary" {...a11yProps(2)} />
-          <Tab label="Detailed Results" {...a11yProps(3)} />
 
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        Students List
+        <StudentList students={students} course_id={course_id}/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         Teams
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={2}>
-        <ReactVirtualizedTable />
       </CustomTabPanel>
     </Box>
   );
