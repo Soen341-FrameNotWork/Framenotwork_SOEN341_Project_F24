@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Box, Paper, Typography, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import { Box, Paper, Typography, Select, MenuItem, FormControl, InputLabel, Checkbox, ListItemText } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 
-export default function DetailedView({courseId}: {courseId: number}) {
+export default function DetailedView({ courseId }: { courseId: number }) {
   const [teamsData, setTeamsData] = useState([]); // Store all teams data
-  const [selectedTeam, setSelectedTeam] = useState(''); // Selected team
-  const [filteredReviewees, setFilteredReviewees] = useState([]); // Store filtered reviewees for selected team
+  const [selectedTeams, setSelectedTeams] = useState<string[]>([]); // Store selected teams
+  const [filteredReviewees, setFilteredReviewees] = useState<any>([]); // Store filtered reviewees for selected teams
 
   // Fetch data once when component mounts
   useEffect(() => {
@@ -24,15 +24,26 @@ export default function DetailedView({courseId}: {courseId: number}) {
 
   // Handle team selection change
   const handleTeamChange = (event: any) => {
-    const selectedTeamName = event.target.value;
-    setSelectedTeam(selectedTeamName);
-
-    // Filter reviewees based on selected team
-    const selectedTeamData = teamsData.find((team) => (team as any).teamName === selectedTeamName);
-    if (selectedTeamData) {
-      setFilteredReviewees((selectedTeamData as any).reviewees);
-    }
+    const { value } = event.target; // Get selected values from event
+    setSelectedTeams(typeof value === 'string' ? value.split(',') : value); // Update selected teams state
   };
+
+  // Filter reviewees based on selected teams
+  useEffect(() => {
+    if (selectedTeams.length > 0) {
+      const filteredData = teamsData
+        .filter((team) => selectedTeams.includes((team as any).teamName))
+        .flatMap((team) =>
+          (team as any).reviewees.map((reviewee: any) => ({
+            teamName: (team as any).teamName,
+            reviewee,
+          }))
+        );
+      setFilteredReviewees(filteredData);
+    } else {
+      setFilteredReviewees([]);
+    }
+  }, [selectedTeams, teamsData]);
 
   // Columns for DataGrid (for ratings)
   const columns = [
@@ -49,56 +60,64 @@ export default function DetailedView({courseId}: {courseId: number}) {
       {/* Dropdown for Team Selection */}
       <FormControl variant="filled" sx={{ minWidth:'150px', marginBottom: '20px' }}>
         <InputLabel>Select Team</InputLabel>
-        <Select value={selectedTeam} onChange={handleTeamChange}>
+        <Select
+          labelId="multiple-checkbox-label"
+          id="multiple-checkbox"
+          multiple
+          value={selectedTeams}
+          onChange={handleTeamChange}
+          renderValue={(selected) => selected.join(', ')} // Display selected team names in input box
+        >
           {teamsData.map((team) => (
             <MenuItem key={(team as any).teamName} value={(team as any).teamName}>
-              {(team as any).teamName}
+              <Checkbox checked={selectedTeams.includes((team as any).teamName)} />
+              <ListItemText primary={(team as any).teamName} />
             </MenuItem>
           ))}
         </Select>
       </FormControl>
 
       {/* Display DataGrid for each reviewee in the selected team */}
-      {filteredReviewees.map((reviewee) => (
-        <Paper key={(reviewee as any).reviewee_name} sx={{ 
+      {filteredReviewees.map(({ teamName, reviewee }: any) => (
+        <Paper key={reviewee.reviewee_name} sx={{ 
             paddingBottom: '20px', 
             marginBottom: '20px',
-            boxShadow: '0px 4px 10px rgba(0,0,0,0.2)', // Adding shadow for better distinction
-            borderRadius: '10px', // Rounded corners
-            borderColor: "#800020",
-            borderWidth: '4px',
-            borderStyle: 'solid',
-            '&:hover': {
-              boxShadow: '0px 0px 10px 5px rgba(0,0,0,0.5)', // Increase shadow on hover
+            boxShadow: '0px 4px 10px rgba(0,0,0,0.2)', 
+            borderRadius: '10px', 
+            borderColor:"#800020",
+            borderWidth:'4px',
+            borderStyle:'solid',
+            '&:hover':{
+              boxShadow:'0px 0px 10px 5px rgba(0,0,0,0.5)',
             }
           }}>
           {/* Box Header with Team Name and Reviewee Name */}
-          <Box sx={{ paddingTop: '10px', paddingLeft: '10px' }}>
-            <Typography variant="h6">Team Name: {selectedTeam}</Typography>
-            <Typography variant="h6">Student Name: {(reviewee as any).reviewee_name}</Typography>
+          <Box sx={{ paddingTop:'10px', paddingLeft:'10px'}}>
+            <Typography variant="h6">Team Name: {teamName}</Typography>
+            <Typography variant="h6">Student Name: {reviewee.reviewee_name}</Typography>
           </Box>
 
           {/* DataGrid for displaying ratings */}
           <DataGrid
-              sx={{ margin: '10px'}}
-              rows={(reviewee as any).ratings.map((rating:any, index:number) => ({
-                id: index + 1,
-                reviewer_name: rating.reviewer_name,
-                cooperative_score: rating.cooperative_score,
-                conceptual_score: rating.conceptual_score,
-                practical_score: rating.practical_score,
-                work_ethic_score: rating.work_ethic_score,
-                overall_score: rating.overall_score,
+              sx={{ margin:'10px'}}
+              rows={reviewee.ratings.map((rating:any,index:number)=>({
+                id:index+1,
+                reviewer_name : rating.reviewer_name,
+                cooperative_score : rating.cooperative_score,
+                conceptual_score : rating.conceptual_score,
+                practical_score : rating.practical_score,
+                work_ethic_score : rating.work_ethic_score,
+                overall_score : rating.overall_score,
               }))}
               disableRowSelectionOnClick={true}
               columns={columns}
             />
 
           {/* Comments Section */}
-          <Box sx={{ paddingLeft: '10px', marginTop: '10px' }}>
+          <Box sx={{ paddingLeft:'10px', marginTop:'10px' }}>
             <Typography variant="h6">Comments:</Typography>
-            {(reviewee as any).ratings.map((rating:any, index:number) => (
-              <Box key={index} sx={{ marginBottom: '10px' }}>
+            {reviewee.ratings.map((rating:any,index:number)=>(
+              <Box key={index} sx={{ marginBottom:'10px' }}>
                 <Typography variant="body1" fontWeight="bold">
                   {rating.reviewer_name}&apos;s comment:
                 </Typography>
@@ -114,11 +133,13 @@ export default function DetailedView({courseId}: {courseId: number}) {
                         Conceptual Comment - {rating.comments.conceptual_comment}
                     </Typography>
                 }
+
                 {rating.comments.practical_comment &&
                     <Typography variant="body2">
                         Practical Comment - {rating.comments.practical_comment}
                     </Typography>
                 }
+
                 {rating.comments.work_ethic_comment &&
                     <Typography variant="body2">
                         Work Ethic Comment - {rating.comments.work_ethic_comment}
