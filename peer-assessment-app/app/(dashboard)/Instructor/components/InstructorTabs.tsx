@@ -4,6 +4,7 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import ReactVirtualizedTable from './ResultSummary';
 import StudentList from '@/app/components/StudentList';
+import DetailedView from './DetailedView/DetailedView';
 
 
 interface TabPanelProps {
@@ -62,8 +63,6 @@ export default function InstructorTabs({courseId}: {courseId: number}) {
       fetchStudents(course_id);
   }, [course_id]);
 
-
-
   return (
     <Box sx={{ width: '100%'}}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -91,7 +90,7 @@ export default function InstructorTabs({courseId}: {courseId: number}) {
       </CustomTabPanel>
 
       <CustomTabPanel value={value} index={3}>
-        Detailed Results
+        <DetailedView courseId={courseId}/>
       </CustomTabPanel>
     </Box>
   );

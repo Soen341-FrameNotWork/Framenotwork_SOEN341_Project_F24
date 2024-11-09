@@ -11,7 +11,18 @@ export default function Navbar() {
   };
 
   return (
-    <Box sx={{ display: 'flex', maxHeight: "100px", bgcolor: "#800020" , marginBottom: 2}}>
+    <Box
+      sx={{
+        display: 'flex',
+        maxHeight: '100px',
+        bgcolor: '#800020', // Burgundy background color
+        marginBottom: 2,
+        position: 'sticky', // Make it sticky
+        top: 0, // Stick to the top of the page
+        zIndex: 1000, // Ensure it stays on top of other elements
+        opacity: 1, // Ensure full opacity
+      }}
+    >
         <Toolbar sx={{ width: '100%' }}>
           <Typography variant="h6" noWrap component="div" sx={{ color: "white" }}>
             Concordia University

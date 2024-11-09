@@ -2,8 +2,7 @@ USE SOEN341;
 
 DROP SCHEMA IF EXISTS SOEN341;
 CREATE SCHEMA IF NOT EXISTS SOEN341;
-
-
+USE SOEN341;
 
 CREATE TABLE IF NOT EXISTS instructors (
 	i_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -59,26 +58,29 @@ CREATE TABLE IF NOT EXISTS course_student (
     UNIQUE (course_id, student_id)
 );
 
+
 CREATE TABLE IF NOT EXISTS ratings (
     r_id INT AUTO_INCREMENT PRIMARY KEY,
-    reviewer_id INT NOT NULL, 
-    reviewee_id INT NOT NULL, 
+    reviewer_id INT NOT NULL,
+    reviewee_id INT NOT NULL,
     cooperative_score INT NOT NULL CHECK (cooperative_score >=1 AND cooperative_score <= 5),
     cooperative_comment MEDIUMTEXT,
     conceptual_score INT NOT NULL CHECK (conceptual_score >=1 AND conceptual_score <= 5),
     conceptual_comment MEDIUMTEXT,
-    practical_score INT NOT NULL CHECK (communication_score >=1 AND communication_score <= 5),
+    practical_score INT NOT NULL CHECK (practical_score >=1 AND practical_score <= 5),
     practical_comment MEDIUMTEXT,
     work_ethic_score INT NOT NULL CHECK (work_ethic_score >=1 AND work_ethic_score <= 5),
     work_ethic_comment MEDIUMTEXT,
-    course_id INT NOT NULL,
-    overall_score Decimal(2,1) NOT NULL CHECK (score >=1 AND score <= 5),
-    comment MEDIUMTEXT,
+    team_id INT NOT NULL,
+    overall_score Decimal(2,1) NOT NULL CHECK (overall_score >=1 AND overall_score <= 5),
     FOREIGN KEY (reviewer_id) REFERENCES students(s_id),
     FOREIGN KEY (reviewee_id) REFERENCES students(s_id),
-    FOREIGN KEY (course_id) REFERENCES courses(c_id),
-    UNIQUE (reviewer_id, reviewee_id, course_id)
+    FOREIGN KEY (team_id) REFERENCES teams(t_id),
+    UNIQUE (reviewer_id, reviewee_id, team_id),
+    CHECK (reviewer_id != reviewee_id)
 );
+
+
 
 
 
