@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Box, Paper, Typography, Select, MenuItem, FormControl, InputLabel, Checkbox, ListItemText } from '@mui/material';
+import { Box, Paper, Typography, Select, MenuItem, FormControl, InputLabel, Checkbox, ListItemText, IconButton } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
+import DownloadIcon from '@mui/icons-material/Download';
 
-export default function DetailedView({ courseId }: { courseId: number }) {
+export default function DetailedView({ courseId}: { courseId: number}) {
   const [teamsData, setTeamsData] = useState([]); // Store all teams data
   const [selectedTeams, setSelectedTeams] = useState<string[]>([]); // Store selected teams
   const [filteredReviewees, setFilteredReviewees] = useState<any>([]); // Store filtered reviewees for selected teams
@@ -39,6 +40,7 @@ export default function DetailedView({ courseId }: { courseId: number }) {
             reviewee,
           }))
         );
+        console.log("filtered data: ",filteredData);
       setFilteredReviewees(filteredData);
     } else {
       setFilteredReviewees([]);
@@ -55,27 +57,63 @@ export default function DetailedView({ courseId }: { courseId: number }) {
     { field: 'overall_score', headerName: 'Average Across All', width: 200 }
   ];
 
+  const handleDownload = () => {
+    // Implement download functionality
+    console.log('Download button clicked');
+    if(filteredReviewees.length === 0){
+      alert("No data to download");
+    }
+    else{
+      // Download data
+      const csv = filteredReviewees.map(({ teamName, reviewee }: any) => {
+        const teamData = reviewee.ratings.map((rating: any) => {
+          return `${teamName},${reviewee.reviewee_name},${rating.reviewer_name},${rating.cooperative_score},${rating.conceptual_score},${rating.practical_score},${rating.work_ethic_score},${rating.overall_score},${rating.comments.cooperative_comment},${rating.comments.conceptual_comment},${rating.comments.practical_comment},${rating.comments.work_ethic_comment}`;
+        });
+        return teamData.join('\n');
+      }).join('\n');
+
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'teams_detailed_results.csv';
+      a.click();
+      a.remove();
+    }
+  }
+
   return (
     <Box sx={{ paddingTop: '30px', borderColor:'red' }}>
       {/* Dropdown for Team Selection */}
-      <FormControl variant="filled" sx={{ minWidth:'150px', marginBottom: '20px' }}>
-        <InputLabel>Select Team</InputLabel>
-        <Select
-          labelId="multiple-checkbox-label"
-          id="multiple-checkbox"
-          multiple
-          value={selectedTeams}
-          onChange={handleTeamChange}
-          renderValue={(selected) => selected.join(', ')} // Display selected team names in input box
+        <Box sx={{ 
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            alignItems: 'center', 
+            marginBottom: '20px' // Optional margin for spacing
+          }}
         >
-          {teamsData.map((team) => (
-            <MenuItem key={(team as any).teamName} value={(team as any).teamName}>
-              <Checkbox checked={selectedTeams.includes((team as any).teamName)} />
-              <ListItemText primary={(team as any).teamName} />
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+          <FormControl variant="filled" sx={{ minWidth: '150px' }}>
+            <InputLabel>Select Team</InputLabel>
+            <Select
+              labelId="multiple-checkbox-label"
+              id="multiple-checkbox"
+              multiple
+              value={selectedTeams}
+              onChange={handleTeamChange}
+              renderValue={(selected) => selected.join(', ')} // Display selected team names in input box
+            >
+              {teamsData.map((team) => (
+                <MenuItem key={(team as any).teamName} value={(team as any).teamName}>
+                  <Checkbox checked={selectedTeams.includes((team as any).teamName)} />
+                  <ListItemText primary={(team as any).teamName} />
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <IconButton aria-label="Download results" title={"Download detailed results"} onClick={handleDownload}>
+            <DownloadIcon />
+          </IconButton>
+        </Box>
 
       {/* Display DataGrid for each reviewee in the selected team */}
       {filteredReviewees.map(({ teamName, reviewee }: any) => (
