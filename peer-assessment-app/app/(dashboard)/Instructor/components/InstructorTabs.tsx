@@ -4,7 +4,7 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import ReactVirtualizedTable from './ResultSummary';
 import StudentList from '@/app/components/StudentList';
-import DetailedView from './DetailedView/DetailedView';
+import DetailedView from './DetailedView';
 
 
 interface TabPanelProps {
