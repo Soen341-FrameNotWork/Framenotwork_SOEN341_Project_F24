@@ -82,23 +82,23 @@ const RatingForm: React.FC<RatingFormProps> = ({ teammates }) => {
   };
 
   const formStyle = {
-    width: 750,
+    width: 700,
     mx: 'auto',
     padding: '20px',
     borderRadius: '10px',
     boxShadow: 3
   };
 
-  const tooltipStyle = {
-    content: [
-      "py-2 px-4 shadow-xl",
-      "text-white",
-      "text-[12px]",
-      "bg-[#800020]",
-      "rounded-[12px]",
-      "max-w-[300px]"
-    ]
-  };
+  const StyledTooltip = styled(Tooltip)({
+    color: '#FFFFFF',
+    backgroundColor: '#800020',
+    padding: '8px 16px',
+    boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.25)',
+    borderRadius: '12px',
+    fontSize: '12px',
+    maxWidth: '300px',
+    fontFamily: 'sans-serif'
+  });
 
   return (
     <Box component="form" onSubmit={handleSubmit} sx={formStyle}>
@@ -145,14 +145,13 @@ const RatingForm: React.FC<RatingFormProps> = ({ teammates }) => {
             <Typography id={`${item.value}-label`}>
               {item.label}: {ratings[item.value as keyof Ratings]}
             </Typography>
-            <Tooltip 
+            <StyledTooltip 
               content={item.tooltip} 
               placement="right-start"
-              classNames={tooltipStyle}
               closeDelay={100}
             >
               <InfoIcon fontSize="small"/> 
-            </Tooltip>
+            </StyledTooltip>
           </div>
           <StyledSlider
             value={ratings[item.value as keyof Ratings] as number} // Explicitly cast to number
