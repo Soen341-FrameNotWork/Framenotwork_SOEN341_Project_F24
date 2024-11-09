@@ -65,12 +65,16 @@ export default function DetailedView({ courseId}: { courseId: number}) {
     }
     else{
       // Download data
-      const csv = filteredReviewees.map(({ teamName, reviewee }: any) => {
+      const header = 'Team Name,Student Name,Reviewer Name,Cooperation,Conceptual,Practical,Work Ethic,Overall,Cooperation Comment,Conceptual Comment,Practical Comment,Work Ethic Comment\n';
+      const csv = header + filteredReviewees.map(({ teamName, reviewee }: any) => {
         const teamData = reviewee.ratings.map((rating: any) => {
           return `${teamName},${reviewee.reviewee_name},${rating.reviewer_name},${rating.cooperative_score},${rating.conceptual_score},${rating.practical_score},${rating.work_ethic_score},${rating.overall_score},${rating.comments.cooperative_comment},${rating.comments.conceptual_comment},${rating.comments.practical_comment},${rating.comments.work_ethic_comment}`;
         });
         return teamData.join('\n');
       }).join('\n');
+      console.log('header: ',header);
+      console.log(`csv file: ${csv}`);
+      
 
       const blob = new Blob([csv], { type: 'text/csv' });
       const url = URL.createObjectURL(blob);
