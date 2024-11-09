@@ -11,13 +11,12 @@ export default function Navbar() {
   };
 
   return (
-    <Box sx={{ display: 'flex', maxHeight: "100px", bgcolor: "#800020" }}>
+    <Box sx={{ display: 'flex', maxHeight: "100px", bgcolor: "#800020" , marginBottom: 2}}>
         <Toolbar sx={{ width: '100%' }}>
           <Typography variant="h6" noWrap component="div" sx={{ color: "white" }}>
             Concordia University
           </Typography>
           <Button sx={{ marginLeft: 'auto', color: 'white' }} onClick={handleSignOut}>
-
             Sign out
           </Button>
         </Toolbar>

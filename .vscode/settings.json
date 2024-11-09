@@ -24,7 +24,8 @@
             "driver": "MySQL",
             "name": "soen341",
             "username": "root",
-            "database": "soen363"
+            "database": "soen363",
+            "askForPassword": true
         }
     ]
 }
