@@ -72,8 +72,8 @@ export default function DetailedView({ courseId}: { courseId: number}) {
         });
         return teamData.join('\n');
       }).join('\n');
-      console.log('header: ',header);
-      console.log(`csv file: ${csv}`);
+      // console.log('header: ',header);
+      // console.log(`csv file: ${csv}`);
       
 
       const blob = new Blob([csv], { type: 'text/csv' });
