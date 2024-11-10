@@ -1,5 +1,11 @@
 
+import { NextResponse } from 'next/server';
 import mysql from 'mysql2/promise';
+
+interface Team {
+  teamName: string;
+  students: string[];
+}
 
 export async function GET() {
   const db = await mysql.createConnection({
@@ -9,8 +15,9 @@ export async function GET() {
     database: process.env.database,
   });
 
+
   try {
-    const [rows] = await db.query<any>(`
+    const [rows] = await db.query<{ t_id: number; t_name: string; s_name: string }[]>(`
       SELECT t.t_id, t.t_name, s.s_name
       FROM teams t
       JOIN team_student ts ON t.t_id = ts.team_id
@@ -18,22 +25,21 @@ export async function GET() {
       ORDER BY t.t_id
     `);
 
-    const formattedTeams = rows.reduce((acc, team) => {
-      const { t_id, t_name, s_name } = team;
+    const formattedTeams = rows.reduce((acc: Record<number, Team>, row) => {
+      const { t_id, t_name, s_name } = row;
       if (!acc[t_id]) {
         acc[t_id] = { teamName: t_name, students: [] };
       }
       acc[t_id].students.push(s_name);
       return acc;
-    }, {});
+    }, {} as Record<number, Team>);
 
-    return new Response(JSON.stringify(Object.values(formattedTeams)), { status: 200 });
+    await db.end();
+
+    return NextResponse.json(Object.values(formattedTeams));
   } 
   catch (error) {
     console.error('Query failed:', error);
-    return new Response(JSON.stringify({ error: 'Couldn\'t fetch Teams' }), { status: 500 });
+    return NextResponse.json({ error: 'Couldn\'t fetch Teams' }, { status: 500 });
   } 
-  finally {
-    await db.end();
-  }
 }
