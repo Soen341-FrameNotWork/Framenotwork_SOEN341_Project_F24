@@ -17,7 +17,7 @@ jobs:
         image: mysql:8
         env:
           MYSQL_ROOT_PASSWORD: password123
-          MYSQL_DATABASE: peer_assessment_app
+          MYSQL_DATABASE: SOEN341
         options: >-
           --health-cmd="mysqladmin ping -h localhost --silent"
           --health-interval=10s
@@ -63,8 +63,8 @@ jobs:
         env:
           MYSQL_PWD: password123
         run: |
-          mysql -h 127.0.0.1 -u root peer_assessment_app < ../MySQL\ scripts/database.sql
-          mysql -h 127.0.0.1 -u root peer_assessment_app < ../MySQL\ scripts/db_population.sql
+          mysql -h 127.0.0.1 -u root SOEN341 < ../MySQL\ scripts/database.sql
+          mysql -h 127.0.0.1 -u root SOEN341 < ../MySQL\ scripts/db_population.sql
 
       # - name: Run tests
       #   working-directory: peer-assessment-app
