@@ -152,6 +152,7 @@ export default function DetailedView({ courseId}: { courseId: number}) {
                 overall_score : rating.overall_score,
               }))}
               disableRowSelectionOnClick={true}
+              hideFooter={true}
               columns={columns}
             />
 

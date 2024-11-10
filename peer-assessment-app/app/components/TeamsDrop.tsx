@@ -19,7 +19,7 @@ export default function TeamsDrop (){
   useEffect(() => {
     const fetchTeams = async () => {
       try {
-        const response = await fetch('@app/api/instructor_teamsView');
+        const response = await fetch('/api/instructor_teamsView');
         const data = await response.json();
         setTeams(data);
       } 
@@ -42,17 +42,18 @@ export default function TeamsDrop (){
       {teams.map((team, index) => (
         <Accordion defaultExpanded elevation={16} key={index}>
           <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
+            expandIcon={<ExpandMoreIcon sx={{color:'white'}}color={'inherit'}/>}
             aria-controls={`panel${index + 1}-content`}
             id={`panel${index + 1}-header`}
             sx={
               {
-                bgcolor: index % 2 === 0 ? '#800020' : '#8f8f8f',
-                color: 'white'
+                bgcolor: '#800020',
+                color: 'white',
+                fontFamily:'Arial',
               }
             }
           >
-            {team!.teamName}
+            {team?.teamName}
           </AccordionSummary>
           <AccordionDetails>
             <StudentTeams studentName={team.students}/>

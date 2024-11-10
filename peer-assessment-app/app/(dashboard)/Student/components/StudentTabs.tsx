@@ -72,6 +72,7 @@ export default function StudentTabs({courseId}: {courseId: number}) {
         >
           <Tab label="Student List" {...a11yProps(0)} />
           <Tab label="Teams" {...a11yProps(1)} />
+          <Tab label="My Profile" {...a11yProps(2)} />
 
         </Tabs>
       </Box>
@@ -80,6 +81,10 @@ export default function StudentTabs({courseId}: {courseId: number}) {
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         Teams
+      </CustomTabPanel>
+      
+      <CustomTabPanel value={value} index={2}>
+        My Profile
       </CustomTabPanel>
     </Box>
   );

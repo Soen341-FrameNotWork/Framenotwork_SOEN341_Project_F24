@@ -116,3 +116,9 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Failed to fetch students' }, { status: 500 });
   }
 }
+
+export async function POST(req: NextRequest) {
+
+
+
+}

@@ -78,6 +78,16 @@ const RatingForm: React.FC<RatingFormProps> = ({ teammates }) => {
       return;
     }
 
+
+    fetch('/api/ratings', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      
+    }
+    )
+
     // await addRating() // Add your backend logic here
   };
 

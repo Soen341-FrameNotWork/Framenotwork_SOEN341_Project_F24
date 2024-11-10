@@ -27,10 +27,7 @@ export default function CourseCard({onClick, row}:CourseCardProp) {
             {row.c_name}
             <Divider sx={{marginBottom: "5px", border: "1px solid", width: "120px"}}/>
           </Typography>
-          {/* <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            Info on the course.
-          </Typography> */}
-          <Avatar sx={{margin: "5px", float: "right"}}></Avatar>
+          <Avatar sx={{margin: "5px", float: "right"}}/>
         </CardContent>
       </CardActionArea>
     </Card>
