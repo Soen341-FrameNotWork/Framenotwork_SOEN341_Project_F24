@@ -42,9 +42,18 @@ jobs:
       - name: Install Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.8'
+          python-version: '3.12'
+
+      - name: Install Poetry
+        working-directory: peer-assessment-app
+        run: pip install poetry
+
+      - name: Configure Poetry to use Python 3.12
+        working-directory: peer-assessment-app
+        run: poetry env use 3.12
 
       - name: Install Python dependencies
+        working-directory: peer-assessment-app
         run: poetry install
 
       - name: Lint the code
