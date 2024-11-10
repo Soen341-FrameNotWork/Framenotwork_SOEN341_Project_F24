@@ -58,7 +58,7 @@ export default function TeamsDrop (){
             <StudentTeams studentName={team.students}/>
           </AccordionDetails>
         </Accordion>
-        ))}
+      ))}
     </div>
   );
 }

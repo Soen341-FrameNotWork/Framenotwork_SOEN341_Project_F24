@@ -7,6 +7,8 @@ interface Team {
   students: string[];
 }
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   const db = await mysql.createConnection({
     host: process.env.host,
