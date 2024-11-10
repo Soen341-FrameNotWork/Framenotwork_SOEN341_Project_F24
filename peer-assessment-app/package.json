@@ -16,6 +16,7 @@
         "@mui/icons-material": "^6.1.0",
         "@mui/material": "^6.1.0",
         "@mui/x-data-grid": "^7.18.0",
+        "@nextui-org/tooltip": "^2.0.41",
         "bcrypt": "^5.1.1",
         "mysql2": "^3.11.3",
         "next": "^14.2.11",
