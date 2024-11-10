@@ -128,6 +128,9 @@ jobs:
           DB_PASSWORD: password123
           DB_DATABASE: SOEN341
         run: poetry run pytest ./tests/test_register_api.py 
+      - name: Display server logs
+        if: always()  # This ensures the step always runs
+        run: cat server.log
 
       # - name: Run frontend tests
       #   working-directory: peer-assessment-app
