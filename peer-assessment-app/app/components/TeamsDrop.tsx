@@ -11,14 +11,10 @@ interface Team {
   students: string[];
 }
 
-type TeamsDropProps = {
-  teamsData: Team[];
-};
+export default function TeamsDrop (){
 
-export default function TeamsDrop({ teamsData }): React.FC<TeamsDropProps>{
-
-  const [teams, setTeams] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [teams, setTeams] = useState<Team[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchTeams = async () => {
@@ -56,7 +52,7 @@ export default function TeamsDrop({ teamsData }): React.FC<TeamsDropProps>{
               }
             }
           >
-            {team.teamName}
+            {team!.teamName}
           </AccordionSummary>
           <AccordionDetails>
             <StudentTeams studentName={team.students}/>
