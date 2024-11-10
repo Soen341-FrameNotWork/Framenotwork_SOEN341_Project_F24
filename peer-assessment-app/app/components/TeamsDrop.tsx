@@ -6,7 +6,16 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import StudentTeams from './TeamsStudents';
 
 
-export default function TeamsDrop() {
+interface Team {
+  teamName: string;
+  students: string[];
+}
+
+type TeamsDropProps = {
+  teamsData: Team[];
+};
+
+export default function TeamsDrop({ teamsData }): React.FC<TeamsDropProps>{
 
   const [teams, setTeams] = useState([]);
   const [loading, setLoading] = useState(true);

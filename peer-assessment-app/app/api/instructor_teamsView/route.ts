@@ -1,6 +1,6 @@
 
 import { NextResponse } from 'next/server';
-import mysql from 'mysql2/promise';
+import mysql, { RowDataPacket } from 'mysql2/promise';
 
 interface Team {
   teamName: string;
@@ -17,7 +17,7 @@ export async function GET() {
 
 
   try {
-    const [rows] = await db.query<{ t_id: number; t_name: string; s_name: string }[]>(`
+    const [rows] = await db.query<RowDataPacket[]>(`
       SELECT t.t_id, t.t_name, s.s_name
       FROM teams t
       JOIN team_student ts ON t.t_id = ts.team_id
@@ -25,7 +25,7 @@ export async function GET() {
       ORDER BY t.t_id
     `);
 
-    const formattedTeams = rows.reduce((acc: Record<number, Team>, row) => {
+    const formattedTeams = rows.reduce((acc: Record<number, Team>, row: any) => {
       const { t_id, t_name, s_name } = row;
       if (!acc[t_id]) {
         acc[t_id] = { teamName: t_name, students: [] };
