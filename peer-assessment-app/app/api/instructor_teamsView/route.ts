@@ -31,7 +31,7 @@ export async function GET(request) {
   } 
   catch (error) {
     console.error('Query failed:', error);
-    return new Response(JSON.stringify({ error: 'Couldn't fetch Teams' }), { status: 500 });
+    return new Response(JSON.stringify({ error: 'Couldn\'t fetch Teams' }), { status: 500 });
   } 
   finally {
     await db.end();
