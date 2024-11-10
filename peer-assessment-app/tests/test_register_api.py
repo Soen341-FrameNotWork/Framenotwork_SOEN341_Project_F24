@@ -27,7 +27,7 @@ def test_register_missing_fields():
         f"{BASE_URL}/register",
         json={
             "firstName": "Jane",
-            "email": "jane.doe@example.com",
+            "email": random_email,
             "password": "securepassword123",
             "userType": "student",
         },
@@ -42,7 +42,7 @@ def test_register_duplicate_user():
         json={
             "firstName": "Jane",
             "lastName": "Doe",
-            "email": "jane.doe@example.com",
+            "email": random_email,
             "password": "securepassword123",
             "userType": "student",
         },
@@ -57,7 +57,7 @@ def test_register_invalid_user_type():
         json={
             "firstName": "Jane",
             "lastName": "Doe",
-            "email": "jane.doe@example.com",
+            "email": random_email,
             "password": "securepassword123",
             "userType": "admin",  # NOTE Invalid user type
         },
