@@ -10,7 +10,7 @@ export async function GET() {
   });
 
   try {
-    const [teams] = await db.query(`
+    const [rows] = await db.query<any>(`
       SELECT t.t_id, t.t_name, s.s_name
       FROM teams t
       JOIN team_student ts ON t.t_id = ts.team_id
@@ -18,7 +18,7 @@ export async function GET() {
       ORDER BY t.t_id
     `);
 
-    const formattedTeams = teams.reduce((acc, team) => {
+    const formattedTeams = rows.reduce((acc, team) => {
       const { t_id, t_name, s_name } = team;
       if (!acc[t_id]) {
         acc[t_id] = { teamName: t_name, students: [] };
