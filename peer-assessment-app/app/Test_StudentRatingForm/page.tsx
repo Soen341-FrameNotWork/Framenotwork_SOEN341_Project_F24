@@ -1,4 +1,4 @@
-import RatingForm from "../components/StudentRatingForm";
+import RatingForm from "../(dashboard)/Student/components/StudentRatingForm";
 
 export default function Home() {
     return (

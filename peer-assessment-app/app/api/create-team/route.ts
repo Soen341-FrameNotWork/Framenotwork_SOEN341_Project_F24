@@ -18,7 +18,7 @@ interface RequestParams{
 
 export async function POST(req: Request) {
     try {
-        // console.log(req);
+        
         const body = await req.json();
         const { students, course_id, team_name }: RequestParams = body;
         console.log("students",students);
