@@ -5,7 +5,7 @@
     "scripts": {
         "dev": "next dev",
         "build": "next build",
-        "start": "next start > server.log 2>&1",
+        "start": "next start",
         "lint": "next lint",
         "test": "jest --coverage",
         "test:frontend": "jest --testPathPattern=tests/frontend",

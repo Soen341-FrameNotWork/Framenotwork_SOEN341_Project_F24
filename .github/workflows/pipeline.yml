@@ -114,10 +114,10 @@ jobs:
 
       - name: Start Next.js server
         working-directory: peer-assessment-app
-        run: npm run start &
+        run: nohup npm run start > server.log 2>&1 &
 
       - name: Wait for server to be ready
-        run: sleep 5
+        run: sleep 10
 
       - name: Run backend tests
         working-directory: peer-assessment-app
@@ -128,6 +128,7 @@ jobs:
           DB_PASSWORD: password123
           DB_DATABASE: SOEN341
         run: poetry run pytest ./tests/test_register_api.py 
+
       - name: Display server logs
         if: always()  # This ensures the step always runs
         run: cat server.log
