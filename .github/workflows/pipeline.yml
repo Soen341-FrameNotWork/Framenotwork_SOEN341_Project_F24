@@ -39,6 +39,14 @@ jobs:
         working-directory: peer-assessment-app
         run: npm install
 
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      - name: Install Python dependencies
+        run: poetry install
+
       - name: Lint the code
         working-directory: peer-assessment-app
         run: npm run lint
@@ -66,17 +74,29 @@ jobs:
           mysql -h 127.0.0.1 -u root SOEN341 < ../MySQL\ scripts/database.sql
           mysql -h 127.0.0.1 -u root SOEN341 < ../MySQL\ scripts/db_population.sql
 
-      # - name: Run tests
+     # Backend Tests
+
+      - name: Build the project
+        working-directory: peer-assessment-app
+        run: npm run build
+
+      - name: Run backend tests
+        working-directory: peer-assessment-app
+        env:
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_USER: root
+          DB_PASSWORD: password123
+          DB_DATABASE: SOEN341
+        run: pytest .\tests\test_register_api.py 
+
+      # - name: Run frontend tests
       #   working-directory: peer-assessment-app
       #   env:
       #     DB_HOST: 127.0.0.1
       #     DB_PORT: 3306
       #     DB_USER: root
       #     DB_PASSWORD: password123
-      #     DB_DATABASE: peer_assessment_app
-      #   run: npm test
-
-      - name: Build the project
-        working-directory: peer-assessment-app
-        run: npm run build
+      #     DB_DATABASE: SOEN341
+      #   run: npm run test:frontend
 
