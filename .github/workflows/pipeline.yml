@@ -112,6 +112,13 @@ jobs:
           DB_DATABASE: SOEN341
         run: npm run build
 
+      - name: Start Next.js server
+        working-directory: peer-assessment-app
+        run: npm run start &
+
+      - name: Wait for server to be ready
+        run: sleep 5
+
       - name: Run backend tests
         working-directory: peer-assessment-app
         env:
