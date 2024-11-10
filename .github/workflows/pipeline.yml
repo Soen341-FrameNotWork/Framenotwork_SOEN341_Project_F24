@@ -40,30 +40,13 @@ jobs:
         run: npm install
 
       - name: Install Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v2
         with:
           python-version: '3.12'
-
 
       - name: Install Poetry
         working-directory: peer-assessment-app
         run: pip install poetry
-
-      - name: Cache Node modules
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      - name: Cache Poetry dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/pypoetry
-          key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-poetry-
 
       - name: Configure Poetry to use Python 3.12
         working-directory: peer-assessment-app
@@ -100,16 +83,8 @@ jobs:
           mysql -h 127.0.0.1 -u root SOEN341 < ../MySQL\ scripts/database.sql
           mysql -h 127.0.0.1 -u root SOEN341 < ../MySQL\ scripts/db_population.sql
 
-     # Backend Tests
-
       - name: Build the project
         working-directory: peer-assessment-app
-        env:
-          DB_HOST: 127.0.0.1
-          DB_PORT: 3306
-          DB_USER: root
-          DB_PASSWORD: password123
-          DB_DATABASE: SOEN341
         run: npm run build
 
       - name: Start Next.js server
@@ -117,29 +92,170 @@ jobs:
         run: nohup npm run start > server.log 2>&1 &
 
       - name: Wait for server to be ready
-        run: sleep 10
+        run: |
+          for i in {1..10}; do
+            if curl -s http://localhost:3000 > /dev/null; then
+              echo "Server is up!"
+              break
+            fi
+            echo "Waiting for server..."
+            sleep 5
+          done
+
+      - name: Check for server log
+        run: |
+          if [ ! -f server.log ]; then
+            echo "Server log file not found. Server may not have started correctly."
+            exit 1
+          fi
 
       - name: Run backend tests
         working-directory: peer-assessment-app
         env:
+          BASE_URL: http://localhost:3000
           DB_HOST: 127.0.0.1
           DB_PORT: 3306
           DB_USER: root
           DB_PASSWORD: password123
           DB_DATABASE: SOEN341
-        run: poetry run pytest ./tests/test_register_api.py 
+        run: poetry run pytest ./tests/test_register_api.py
 
       - name: Display server logs
-        if: always()  # This ensures the step always runs
+        if: always()  # Ensure this step runs regardless of previous step results
         run: cat server.log
 
-      # - name: Run frontend tests
-      #   working-directory: peer-assessment-app
-      #   env:
-      #     DB_HOST: 127.0.0.1
-      #     DB_PORT: 3306
-      #     DB_USER: root
-      #     DB_PASSWORD: password123
-      #     DB_DATABASE: SOEN341
-      #   run: npm run test:frontend
+# jobs:
+#   lint-build-test:
+#     runs-on: ubuntu-latest
+
+#     services:
+#       mysql:
+#         image: mysql:8
+#         env:
+#           MYSQL_ROOT_PASSWORD: password123
+#           MYSQL_DATABASE: SOEN341
+#         options: >-
+#           --health-cmd="mysqladmin ping -h localhost --silent"
+#           --health-interval=10s
+#           --health-timeout=5s
+#           --health-retries=3
+#         ports:
+#           - 3306:3306
+
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v3
+
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: '22.9.0'
+
+#       - name: Install dependencies
+#         working-directory: peer-assessment-app
+#         run: npm install
+
+#       - name: Install Python
+#         uses: actions/setup-python@v4
+#         with:
+#           python-version: '3.12'
+
+
+#       - name: Install Poetry
+#         working-directory: peer-assessment-app
+#         run: pip install poetry
+
+#       - name: Cache Node modules
+#         uses: actions/cache@v3
+#         with:
+#           path: ~/.npm
+#           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+#           restore-keys: |
+#             ${{ runner.os }}-node-
+
+#       - name: Cache Poetry dependencies
+#         uses: actions/cache@v3
+#         with:
+#           path: ~/.cache/pypoetry
+#           key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
+#           restore-keys: |
+#             ${{ runner.os }}-poetry-
+
+#       - name: Configure Poetry to use Python 3.12
+#         working-directory: peer-assessment-app
+#         run: poetry env use 3.12
+
+#       - name: Install Python dependencies
+#         working-directory: peer-assessment-app
+#         run: poetry install
+
+#       - name: Lint the code
+#         working-directory: peer-assessment-app
+#         run: npm run lint
+
+#       - name: Type Check
+#         working-directory: peer-assessment-app
+#         run: npm run type-check
+
+#       - name: Format Code with Prettier
+#         working-directory: peer-assessment-app
+#         run: npm run format:check || echo "Prettier found issues, but continuing without failing the job."
+
+#       - name: Wait for MySQL to be ready
+#         run: |
+#           until mysqladmin ping -h 127.0.0.1 --silent; do
+#             echo "Waiting for MySQL to be ready..."
+#             sleep 2
+#           done
+
+#       - name: Run database migrations
+#         working-directory: peer-assessment-app
+#         env:
+#           MYSQL_PWD: password123
+#         run: |
+#           mysql -h 127.0.0.1 -u root SOEN341 < ../MySQL\ scripts/database.sql
+#           mysql -h 127.0.0.1 -u root SOEN341 < ../MySQL\ scripts/db_population.sql
+
+#      # Backend Tests
+
+#       - name: Build the project
+#         working-directory: peer-assessment-app
+#         env:
+#           DB_HOST: 127.0.0.1
+#           DB_PORT: 3306
+#           DB_USER: root
+#           DB_PASSWORD: password123
+#           DB_DATABASE: SOEN341
+#         run: npm run build
+
+#       - name: Start Next.js server
+#         working-directory: peer-assessment-app
+#         run: nohup npm run start > server.log 2>&1 &
+
+#       - name: Wait for server to be ready
+#         run: sleep 10
+
+#       - name: Run backend tests
+#         working-directory: peer-assessment-app
+#         env:
+#           DB_HOST: 127.0.0.1
+#           DB_PORT: 3306
+#           DB_USER: root
+#           DB_PASSWORD: password123
+#           DB_DATABASE: SOEN341
+#         run: poetry run pytest ./tests/test_register_api.py 
+
+#       - name: Display server logs
+#         if: always()  # This ensures the step always runs
+#         run: cat server.log
+
+#       # - name: Run frontend tests
+#       #   working-directory: peer-assessment-app
+#       #   env:
+#       #     DB_HOST: 127.0.0.1
+#       #     DB_PORT: 3306
+#       #     DB_USER: root
+#       #     DB_PASSWORD: password123
+#       #     DB_DATABASE: SOEN341
+#       #   run: npm run test:frontend
 
