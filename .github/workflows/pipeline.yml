@@ -40,13 +40,30 @@ jobs:
         run: npm install
 
       - name: Install Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: '3.12'
+
 
       - name: Install Poetry
         working-directory: peer-assessment-app
         run: pip install poetry
+
+      - name: Cache Node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Cache Poetry dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pypoetry
+          key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-poetry-
 
       - name: Configure Poetry to use Python 3.12
         working-directory: peer-assessment-app
@@ -87,6 +104,12 @@ jobs:
 
       - name: Build the project
         working-directory: peer-assessment-app
+        env:
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_USER: root
+          DB_PASSWORD: password123
+          DB_DATABASE: SOEN341
         run: npm run build
 
       - name: Run backend tests
@@ -97,7 +120,7 @@ jobs:
           DB_USER: root
           DB_PASSWORD: password123
           DB_DATABASE: SOEN341
-        run: pytest .\tests\test_register_api.py 
+        run: poetry run pytest ./tests/test_register_api.py 
 
       # - name: Run frontend tests
       #   working-directory: peer-assessment-app
