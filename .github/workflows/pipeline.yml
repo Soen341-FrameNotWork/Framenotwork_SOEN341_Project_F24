@@ -98,9 +98,6 @@ jobs:
           DB_DATABASE: SOEN341
         run: npx start-server-and-test "npm run start" http://localhost:3000 "poetry run pytest ./tests/test_register_api.py"
 
-      - name: Display server logs
-        if: always()  # Ensure this step runs regardless of previous step results
-        run: cat server.log
 # jobs:
 #   lint-build-test:
 #     runs-on: ubuntu-latest
