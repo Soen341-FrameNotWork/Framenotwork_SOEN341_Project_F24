@@ -26,32 +26,37 @@ interface Reviewee {
 }
 
 interface Team {
+  teamId: string;
   teamName: string;
   reviewees: Reviewee[];
 }
 
 const processRatingsData = (data: any): Team[] => {
-  const teams: { [teamName: string]: { [revieweeName: string]: Reviewee } } = {};
+  const teams: { [teamName: string]: { teamId: string; teamName: string; reviewees: { [revieweeName: string]: Reviewee } } } = {};
 
   // Loop through each row of data
   data.forEach((row: any) => {
-    const { team_name, reviewee_name } = row;
+    const { team_name, reviewee_name, team_id } = row;
 
     // Initialize the team if not already present
     if (!teams[team_name]) {
-      teams[team_name] = {};
+      teams[team_name] = {
+        teamId: team_id, // Store the teamId
+        teamName: team_name,
+        reviewees: {},
+      };
     }
 
     // Initialize the reviewee if not already present in the team
-    if (!teams[team_name][reviewee_name]) {
-      teams[team_name][reviewee_name] = {
+    if (!teams[team_name].reviewees[reviewee_name]) {
+      teams[team_name].reviewees[reviewee_name] = {
         reviewee_name,
         ratings: [],
       };
     }
 
     // Add the rating to the corresponding reviewee in the team
-    teams[team_name][reviewee_name].ratings.push({
+    teams[team_name].reviewees[reviewee_name].ratings.push({
       reviewer_name: row.reviewer_name,
       cooperative_score: row.cooperative_score,
       conceptual_score: row.conceptual_score,
@@ -69,8 +74,9 @@ const processRatingsData = (data: any): Team[] => {
 
   // Convert the nested object into an array of teams with reviewees
   return Object.keys(teams).map((teamName) => ({
-    teamName,
-    reviewees: Object.values(teams[teamName]),
+    teamId: teams[teamName].teamId, // Include teamId
+    teamName: teams[teamName].teamName,
+    reviewees: Object.values(teams[teamName].reviewees),
   }));
 };
 // The rest of your API route remains unchanged
@@ -91,6 +97,7 @@ export async function GET(request: NextRequest) {
                     S_reviewee.s_name AS reviewee_name, 
                     S_reviewer.s_name AS reviewer_name,
                     T.t_name as team_name,
+                    T.t_id as team_id,
                     R.cooperative_score, 
                     R.cooperative_comment, 
                     R.conceptual_score, 
