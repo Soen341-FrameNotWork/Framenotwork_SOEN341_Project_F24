@@ -18,6 +18,8 @@ jobs:
         env:
           MYSQL_ROOT_PASSWORD: password123
           MYSQL_DATABASE: SOEN341
+          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+          NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
         options: >-
           --health-cmd="mysqladmin ping -h localhost --silent"
           --health-interval=10s
@@ -96,5 +98,7 @@ jobs:
           DB_USER: root
           DB_PASSWORD: password123
           DB_DATABASE: SOEN341
+          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+          NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
         run: npx start-server-and-test "npm run start" http://localhost:3000 "poetry run pytest ./tests/"
 
