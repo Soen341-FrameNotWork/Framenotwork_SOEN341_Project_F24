@@ -12,7 +12,7 @@ export default function DetailedView({ courseId}: { courseId: number}) {
   useEffect(() => {
     const fetchTeamsData = async () => {
       try {
-        const response = await fetch(`/api/team/ratings?courseId=${courseId}`); // Replace with your API endpoint
+        const response = await fetch(`/api/teams/ratings?courseId=${courseId}`); // Replace with your API endpoint
         const data = await response.json();
         setTeamsData(data); // Store all teams data
       } catch (error) {

@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation'
 import CourseCard from "../../components/CourseCard"
 import { useEffect, useState } from "react";
+import { Box } from "@mui/system";
 
 export default function Home() {
     const [courses, setCourses] = useState([]);
@@ -34,13 +35,22 @@ export default function Home() {
 
     return(
         
-        <>
+        <Box 
+        sx={{
+            display: "flex", 
+            flexWrap: "wrap", // Ensures items wrap to the next row if needed
+            gap: "10px", 
+            justifyContent: "flex-start", // Aligns items to the start of the row
+            alignItems: "center", // Centers items vertically within each row
+            margin: 5,
+        }}
+    >
             {
                 courses.map((course, index)  => (
                     <CourseCard key={index} onClick={() => handleCourseClick((course as any).c_id)} row={course} />
                 ))
             }
-        </>
+        </Box>
           
         
      
