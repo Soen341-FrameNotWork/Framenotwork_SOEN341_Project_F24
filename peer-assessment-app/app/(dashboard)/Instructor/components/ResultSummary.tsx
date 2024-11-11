@@ -165,7 +165,7 @@ export default function ReactVirtualizedTable() {
     return [header, ...rowData].join('\n');
   }
 
-  const handleResDl = (e: any) => {
+  const handleResDl = () => {
     const csvContent = summaryCSV(columns, rows);
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
@@ -181,9 +181,6 @@ export default function ReactVirtualizedTable() {
      <IconButton aria-label="Download results" title={"Download detailed results"} onClick={handleResDl} sx={{ float: "right" }}>
             <DownloadIcon />
           </IconButton>
-    {/* <Button variant="contained" color="primary" onClick={handleResDl} sx={{ float: "right" }}>
-        Download Results Summary
-      </Button> */}
     <Paper style={{ height: 600, width: '100%' }}>
       <TableVirtuoso
         data={rows}

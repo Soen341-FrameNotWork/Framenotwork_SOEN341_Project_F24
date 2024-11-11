@@ -81,7 +81,7 @@ export default function Teams({students, course_id}: StudentListProps) {
         <Box sx={{ maxWidth: 300 }}>
         <Typography>
             <label>
-        Change a student's team
+        Change a student&apos;s team
             </label>
         </Typography>
         <FormControl fullWidth>

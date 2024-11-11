@@ -43,6 +43,7 @@ export async function POST(req: Request) {
                 WHERE student_id = ? AND course_id = ?`,
                 [team_id, (student as any).s_id, course_id]
             );
+            console.log(teamResult)
 
             await db.commit();
 
