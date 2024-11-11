@@ -80,22 +80,22 @@ export default function RatingForm({courseId}: {courseId: number}) {
     workEthicComment: '',
   });
   const [openDialog, setOpenDialog] = useState(false); // State to control dialog visibility
-  const fetchTeammates = async () => {
-    try {
-      const response = await fetch(`/api/teams/teammates?courseId=${courseId}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch teammates');
-      }
-      const data = await response.json();
-      setTeammates(data);
-    } catch (error) {
-      console.error('Error fetching teammates:', error);
-    }
-  };
+  
   useEffect(() => {
-
+    const fetchTeammates = async () => {
+      try {
+        const response = await fetch(`/api/teams/teammates?courseId=${courseId}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch teammates');
+        }
+        const data = await response.json();
+        setTeammates(data);
+      } catch (error) {
+        console.error('Error fetching teammates:', error);
+      }
+    };
     fetchTeammates();
-  }, []);
+  }, [courseId]);
 
   
   const handleTeammateChange = (event: SelectChangeEvent<string>) => {
