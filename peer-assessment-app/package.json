@@ -20,11 +20,13 @@
         "@mui/x-data-grid": "^7.18.0",
         "@nextui-org/tooltip": "^2.0.41",
         "bcrypt": "^5.1.1",
+        "chart.js": "^4.4.6",
         "mysql2": "^3.11.3",
         "next": "^14.2.11",
         "next-auth": "^4.24.7",
         "prettier": "^3.3.3",
         "react": "^18",
+        "react-chartjs-2": "^5.2.0",
         "react-dom": "^18",
         "react-virtuoso": "^4.12.0"
     },

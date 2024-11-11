@@ -4,7 +4,8 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import StudentList from '@/app/components/StudentList';
 import RatingForm from './StudentRatingForm';
-
+import TeamsDrop from '@/app/components/TeamsDrop';
+import StudentAttributes from '@/app/components/StudentAttributes';
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -36,6 +37,9 @@ function a11yProps(index: number) {
 
 export default function StudentTabs({courseId}: {courseId: number}) {
   const [value, setValue] =useState(0);
+  const [teams, setTeams] = useState([]); // Move teams state here
+  const [loadingTeams, setLoadingTeams] = useState<boolean>(true); // Loading state for teams
+
 
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -57,8 +61,29 @@ export default function StudentTabs({courseId}: {courseId: number}) {
       }
   };
 
+  // Fetch teams for the course
+  const fetchTeams = async () => {
+    setLoadingTeams(true); // Set loading state
+    try {
+      const response = await fetch('/api/instructor_teamsView');
+      if (!response.ok) {
+        throw new Error('Failed to fetch teams');
+      }
+      const data = await response.json();
+      setTeams(data);
+    } catch (error) {
+      console.error('Error fetching teams:', error);
+    } finally {
+      setLoadingTeams(false); // Stop loading state
+    }
+  };
+
+
+
+
   useEffect(() => {
       fetchStudents(course_id);
+      fetchTeams(); // Fetch teams when component mounts
   }, [course_id]);
 
 
@@ -83,7 +108,7 @@ export default function StudentTabs({courseId}: {courseId: number}) {
       </CustomTabPanel>
 
       <CustomTabPanel value={value} index={1}>
-        Team
+        <TeamsDrop teams={teams} loading={loadingTeams}/>
       </CustomTabPanel>
 
       <CustomTabPanel value={value} index={2}>
@@ -91,7 +116,7 @@ export default function StudentTabs({courseId}: {courseId: number}) {
       </CustomTabPanel>
 
       <CustomTabPanel value={value} index={3}>
-        My Profile
+        <StudentAttributes course_id={courseId} />
       </CustomTabPanel>
     </Box>
   );
