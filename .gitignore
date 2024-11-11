@@ -3,3 +3,4 @@ peer-assessment-app/.env
 peer-assessment-app/package-lock.json
 node_modules
 peer-assessment-app/tests/__pycache__/test_register_api.cpython-312-pytest-8.3.3.pyc
+peer-assessment-app/tests/__pycache__

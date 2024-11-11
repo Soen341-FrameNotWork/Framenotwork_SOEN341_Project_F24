@@ -96,5 +96,5 @@ jobs:
           DB_USER: root
           DB_PASSWORD: password123
           DB_DATABASE: SOEN341
-        run: npx start-server-and-test "npm run start" http://localhost:3000 "poetry run pytest ./tests/test_register_api.py"
+        run: npx start-server-and-test "npm run start" http://localhost:3000 "poetry run pytest ./tests/"
 
