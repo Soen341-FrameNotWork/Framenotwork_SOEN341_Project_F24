@@ -181,6 +181,7 @@ export default function ReactVirtualizedTable() {
   };
 
   return (
+    <>
     <Paper elevation={16} style={{ height: 600, width: '100%', border: '1px solid black' }}>
       <TableVirtuoso
         data={rows}
