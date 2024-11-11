@@ -4,6 +4,7 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import ReactVirtualizedTable from './ResultSummary';
 import StudentList from '@/app/components/StudentList';
+import TeamsDrop from '@/app/components/TeamsDrop';
 import DetailedView from './DetailedView';
 
 
@@ -83,7 +84,7 @@ export default function InstructorTabs({courseId}: {courseId: number}) {
         <StudentList students={students} course_id={courseId}/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        Teams
+        <TeamsDrop />	
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
         <ReactVirtualizedTable />
