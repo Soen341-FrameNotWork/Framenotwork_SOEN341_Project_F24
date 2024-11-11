@@ -1,0 +1,22 @@
+Date: 5-11-2024
+Time: 90 minutes 
+
+Attendees:
+
+Bulat Abdullin 
+Jeremie Guerchon 
+Tymofiy Kovalenko 
+Jidapa Laopikanon 
+Evan Teboul 
+Mathieu Pare Vargas 
+
+Important points of the meeting:
+- Went over the sprint 3 plan and guidelines in order to plan what our objectives are as well as rediscuss the web page designs of the website (ex: how the team display will look).
+- Since the peer assessment functionality wasn't completed in sprint 2, it will have to be for sprint 3. That includes the form for all assessment dimensions. Therefore, the forms will need to be created as well as the backend needed to link them up with the assessments.
+- Some tasks were distributed to different team members:
+    - Evan and Mathieu will handle the instructor summary and detailed view along with most elements related to the database.
+    - Jeremie will handle data retrieval from a CSV file.
+    - Bulat will create the peer assessment form.
+    - Tim will handle the pipeline.
+    - Jidapa will create the rating profile.
+
