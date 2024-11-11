@@ -92,7 +92,7 @@ export default function StudentTabs({courseId}: {courseId: number}) {
 
       <CustomTabPanel value={value} index={3}>
         My Profile
-      </CustomTabPanel>
+x      </CustomTabPanel>
     </Box>
   );
 }
