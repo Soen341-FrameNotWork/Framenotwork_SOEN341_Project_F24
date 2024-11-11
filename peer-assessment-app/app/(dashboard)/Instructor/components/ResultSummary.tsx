@@ -7,6 +7,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { TableVirtuoso, TableComponents } from 'react-virtuoso';
+import { IconButton } from '@mui/material';
+import DownloadIcon from '@mui/icons-material/Download';
 
 interface Data {
   id: number;
@@ -159,14 +161,37 @@ function rowContent(_index: number, row: Data) {
 }
 
 export default function ReactVirtualizedTable() {
+  const summaryCSV = (columns: ColumnData[], rows: Data[]): any => {
+    const header = columns.map(col => col.label).join(',');  
+    const rowData = rows.map(row =>
+      columns.map(col => row[col.dataKey]).join(',')
+    );
+    return [header, ...rowData].join('\n');
+  }
+
+  const handleResDl = () => {
+    const csvContent = summaryCSV(columns, rows);
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'results-summary.csv');
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
+    <>
+    <IconButton aria-label="Download results" title={"Download detailed results"} onClick={handleResDl} sx={{ float: "right" }}>
+            <DownloadIcon />
+          </IconButton>
     <Paper elevation={16} style={{ height: 600, width: '100%', border: '1px solid black' }}>
       <TableVirtuoso
         data={rows}
         components={VirtuosoTableComponents}
         fixedHeaderContent={fixedHeaderContent}
-        itemContent={rowContent}
-      />
+        itemContent={rowContent} />
     </Paper>
+    </>
   );
 }

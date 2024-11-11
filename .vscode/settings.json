@@ -26,6 +26,19 @@
             "username": "root",
             "database": "soen363",
             "askForPassword": true
+        },
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "bruh",
+            "database": "soen341",
+            "username": "root"
         }
     ]
 }
