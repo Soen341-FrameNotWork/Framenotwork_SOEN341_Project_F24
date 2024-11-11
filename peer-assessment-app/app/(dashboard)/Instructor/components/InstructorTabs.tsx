@@ -85,9 +85,8 @@ export default function InstructorTabs({courseId}: {courseId: number}) {
         <StudentList students={students} course_id={courseId}/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        Teams
         <Teams students={students} course_id={courseId}/>
-        <TeamsDrop />	
+        <TeamsDrop />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
         <ReactVirtualizedTable />
