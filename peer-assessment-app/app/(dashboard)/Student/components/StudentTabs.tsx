@@ -3,6 +3,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import StudentList from '@/app/components/StudentList';
+import RatingForm from './StudentRatingForm';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -72,18 +73,24 @@ export default function StudentTabs({courseId}: {courseId: number}) {
         >
           <Tab label="Student List" {...a11yProps(0)} />
           <Tab label="Teams" {...a11yProps(1)} />
-          <Tab label="My Profile" {...a11yProps(2)} />
+          <Tab label="Evaluate Team members" {...a11yProps(2)} />
+          <Tab label="My Profile" {...a11yProps(3)} />
 
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
         <StudentList students={students} course_id={course_id}/>
       </CustomTabPanel>
+
       <CustomTabPanel value={value} index={1}>
-        Teams
+        Team
       </CustomTabPanel>
-      
+
       <CustomTabPanel value={value} index={2}>
+        <RatingForm courseId={courseId} />
+      </CustomTabPanel>
+
+      <CustomTabPanel value={value} index={3}>
         My Profile
       </CustomTabPanel>
     </Box>

@@ -13,6 +13,8 @@ export const dynamic = 'force-dynamic';
 export async function GET() {
   const db = await mysql.createConnection(GetDBSettings());
   
+
+
   try {
     console.log('Fetching teams...');
     const [rows] = await db.query<RowDataPacket[]>(`
@@ -22,7 +24,6 @@ export async function GET() {
       JOIN students s ON ts.student_id = s.s_id
       ORDER BY t.t_id
     `);
-    console.log('Fetched teams:', rows);
 
     const formattedTeams = rows.reduce((acc: Record<number, Team>, row: any) => {
       const { t_id, t_name, s_name } = row;

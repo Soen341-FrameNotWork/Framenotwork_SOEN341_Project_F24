@@ -1,4 +1,5 @@
 'use client';
+
 import { useRouter } from 'next/navigation'
 import CourseCard from "../../components/CourseCard"
 import { useEffect, useState } from "react";
@@ -7,9 +8,9 @@ export default function Home() {
     const [courses, setCourses] = useState([]);
     const router = useRouter();
 
-    const fetchInstructorCourses = async () => {
+    const fetchCourses = async () => {
         try {
-            const response = await fetch('/api/instructor_courses');
+            const response = await fetch('/api/courses');
             if (!response.ok) {
                 throw new Error('Failed to fetch courses');
             }
@@ -20,10 +21,11 @@ export default function Home() {
             console.error('Error fetching courses:', error);
         }
     };
+    
 
     // Use this function to load courses when needed
     useEffect(() => {
-        fetchInstructorCourses();
+        fetchCourses();
     }, []);
 
     const handleCourseClick = (courseId:any) => {

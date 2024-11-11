@@ -10,7 +10,7 @@ export default function Home() {
 
     const fetchInstructorCourses = async () => {
         try {
-            const response = await fetch('/api/instructor_courses');
+            const response = await fetch('/api/courses');
             if (!response.ok) {
                 throw new Error('Failed to fetch courses');
             }

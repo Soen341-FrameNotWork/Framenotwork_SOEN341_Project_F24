@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import mysql from 'mysql2/promise';
 import GetDBSettings from '@lib/db';
+// import { getServerSession } from 'next-auth/next';
+// import { authOptions } from "@/app/utils/authOptions";
 
 
 interface Rating {
@@ -108,6 +110,7 @@ export async function GET(request: NextRequest) {
     const params = [courseId];
     const db = await mysql.createConnection(GetDBSettings());
     const [rows] = await db.execute(query, params);
+    db.commit();
     db.end();
 
     return NextResponse.json(processRatingsData(rows));
@@ -118,7 +121,105 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  // try {
+  const body = await req.json();
+  console.log('Received rating:', body);
+    if (!body) {
+      return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
+    }
+  
+  // let session = null;
+  try {
+    // Ensure both req and res are passed to getServerSession
+  //   session = await getServerSession(authOptions);
+  //   // console.log("session: ",session);
+
+  //   if (!session) {
+  //     return NextResponse.json({ message: "You must be logged in." }, { status: 401 });
+  //   }
+
+  //   if (!session.user || session.user.role !== 'student') {
+  //       return NextResponse.json({ error: 'Unauthorized user role' }, { status: 401 });
+  //   }
+  // } catch (error) {
+  //   console.error("Error in GET handler:", error);
+  //   return NextResponse.json({ message: "Server Error"},{status:500});
+  // }
+    const { 
+      id: reviewee_id,
+      teamId: team_id,
+      cooperation: cooperative_score,
+      conceptual: conceptual_score,
+      practical: practical_score,
+      workEthic: work_ethic_score,
+      overallScore:overall_score,
+      cooperationComment: cooperative_comment,
+      conceptualComment: conceptual_comment,
+      practicalComment: practical_comment,
+      workEthicComment: work_ethic_comment, 
+    } = body;
+
+    
+    console.log('Received rewiewee_id: ', reviewee_id);
+    console.log('Received team_id: ', team_id);
+    console.log('Received cooperative_score: ', cooperative_score);
+    console.log('Received conceptual_score: ', conceptual_score);
+    console.log('Received practical_score: ', practical_score);
+    console.log('Received work_ethic_score: ', work_ethic_score);
+    console.log('Received overall_score: ', overall_score);
+    console.log('Received cooperative_comment: ', cooperative_comment);
+    console.log('Received conceptual_comment: ', conceptual_comment);
+    console.log('Received practical_comment: ', practical_comment);
+    console.log('Received work_ethic_comment: ', work_ethic_comment);
+    
 
 
+    const query = `
+    INSERT INTO ratings (
+      reviewer_id, reviewee_id, team_id, cooperative_score, conceptual_score, practical_score, 
+      work_ethic_score, overall_score, cooperative_comment, conceptual_comment, 
+      practical_comment, work_ethic_comment)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      ON DUPLICATE KEY UPDATE 
+      cooperative_score = VALUES(cooperative_score),
+      conceptual_score = VALUES(conceptual_score),
+      practical_score = VALUES(practical_score),
+      work_ethic_score = VALUES(work_ethic_score),
+      overall_score = VALUES(overall_score),
+      cooperative_comment = VALUES(cooperative_comment),
+      conceptual_comment = VALUES(conceptual_comment),
+      practical_comment = VALUES(practical_comment),
+      work_ethic_comment = VALUES(work_ethic_comment)
+  `;
 
+    // const reviewer_id = session.user.id;
+    const reviewer_id = 1;
+
+    const params = [
+      reviewer_id, 
+      reviewee_id, 
+      team_id, 
+      cooperative_score, 
+      conceptual_score, 
+      practical_score, 
+      work_ethic_score, 
+      overall_score,
+      cooperative_comment,
+      conceptual_comment,
+      practical_comment,
+      work_ethic_comment
+    ];
+
+    const db = await mysql.createConnection(GetDBSettings());
+    await db.execute(query, params);
+    db.commit();
+    db.end();
+
+    return NextResponse.json({ message: 'Rating added successfully' }, { status: 200 });
+    
+  }
+  catch(error){
+    console.error('Database error:', error);
+    return NextResponse.json({ error: 'Failed to add rating' }, { status: 500 });
+  }
 }
