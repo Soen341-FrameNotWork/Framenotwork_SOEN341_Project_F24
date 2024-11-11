@@ -25,15 +25,16 @@ interface Student {
 interface StudentListProps {
   students: Student[];
   course_id: number | string;
+  onTeamChange: () => void;
 }
 
-export default function Teams({ students, course_id }: StudentListProps) {
+export default function Teams({ students, course_id, onTeamChange}: StudentListProps) {
   const [teamsData, setTeamsData] = useState([]);
   
   useEffect(() => {
     const fetchTeamsData = async () => {
       try {
-        const response = await fetch(`/api/team/ratings?courseId=${course_id}`);
+        const response = await fetch(`/api/teams/ratings?courseId=${course_id}`);
         const data = await response.json();
         setTeamsData(data);
       } catch (error) {
@@ -81,6 +82,7 @@ export default function Teams({ students, course_id }: StudentListProps) {
         console.log('Success:', data);
         alert('Student has changed team successfully!');
         handleCloseDialog(); // Close the dialog on success
+        onTeamChange(); // Trigger refetch of teams after successful submission
       })
       .catch((error) => {
         console.error('Error:', error);
