@@ -1,4 +1,4 @@
-name: Lint and Build Next.js Project
+name: Lint, Build, and Test Next.js Project
 
 on:
   push:
@@ -9,8 +9,22 @@ on:
       - main
 
 jobs:
-  lint-and-build:
+  lint-build-test:
     runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: password123
+          MYSQL_DATABASE: SOEN341
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+        ports:
+          - 3306:3306
 
     steps:
       - name: Checkout repository
@@ -25,6 +39,23 @@ jobs:
         working-directory: peer-assessment-app
         run: npm install
 
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.12'
+
+      - name: Install Poetry
+        working-directory: peer-assessment-app
+        run: pip install poetry
+
+      - name: Configure Poetry to use Python 3.12
+        working-directory: peer-assessment-app
+        run: poetry env use 3.12
+
+      - name: Install Python dependencies
+        working-directory: peer-assessment-app
+        run: poetry install
+
       - name: Lint the code
         working-directory: peer-assessment-app
         run: npm run lint
@@ -37,7 +68,33 @@ jobs:
         working-directory: peer-assessment-app
         run: npm run format:check || echo "Prettier found issues, but continuing without failing the job."
 
+      - name: Wait for MySQL to be ready
+        run: |
+          until mysqladmin ping -h 127.0.0.1 --silent; do
+            echo "Waiting for MySQL to be ready..."
+            sleep 2
+          done
+
+      - name: Run database migrations
+        working-directory: peer-assessment-app
+        env:
+          MYSQL_PWD: password123
+        run: |
+          mysql -h 127.0.0.1 -u root SOEN341 < ../MySQL\ scripts/database.sql
+          mysql -h 127.0.0.1 -u root SOEN341 < ../MySQL\ scripts/db_population.sql
 
       - name: Build the project
         working-directory: peer-assessment-app
         run: npm run build
+
+      - name: Start server and run tests
+        working-directory: peer-assessment-app
+        env:
+          BASE_URL: http://localhost:3000
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_USER: root
+          DB_PASSWORD: password123
+          DB_DATABASE: SOEN341
+        run: npx start-server-and-test "npm run start" http://localhost:3000 "poetry run pytest ./tests/test_register_api.py"
+

@@ -126,13 +126,17 @@ const VirtuosoTableComponents: TableComponents<Data> = {
 
 function fixedHeaderContent() {
   return (
-    <TableRow >
+    <TableRow sx={
+      {
+        broder: '1px solid black'
+      }
+    }>
       {columns.map((column) => (
         <TableCell
           key={column.dataKey}
           variant="head"
           align= {'center'}
-          sx={{ backgroundColor: '#7f7f7f' }}
+          sx={{ backgroundColor: '#800020', color:'white' }}
         >
           {column.label}
         </TableCell>
@@ -177,11 +181,7 @@ export default function ReactVirtualizedTable() {
   };
 
   return (
-    <>
-     <IconButton aria-label="Download results" title={"Download detailed results"} onClick={handleResDl} sx={{ float: "right" }}>
-            <DownloadIcon />
-          </IconButton>
-    <Paper style={{ height: 600, width: '100%' }}>
+    <Paper elevation={16} style={{ height: 600, width: '100%', border: '1px solid black' }}>
       <TableVirtuoso
         data={rows}
         components={VirtuosoTableComponents}
