@@ -182,6 +182,9 @@ export default function ReactVirtualizedTable() {
 
   return (
     <>
+    <IconButton aria-label="Download results" title={"Download detailed results"} onClick={handleResDl} sx={{ float: "right" }}>
+            <DownloadIcon />
+          </IconButton>
     <Paper elevation={16} style={{ height: 600, width: '100%', border: '1px solid black' }}>
       <TableVirtuoso
         data={rows}
