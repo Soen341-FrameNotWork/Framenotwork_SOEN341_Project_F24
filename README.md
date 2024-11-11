@@ -17,6 +17,21 @@ Working in teams is often emphasized in academic settings to help students devel
 - Automated score sharing for both students and instructors
 - Instructor dashboard for team creation and viewing results from peer assessments
 
+### Database
+![ERD diagram (images/ERD.png)](images/ERD.png)
+
+The database consists of the following relationships:
+- instructors to courses (one-to-many):  
+    1 instructor teaches multiple courses
+- courses to teams (one-to-many):  
+    1 course contains multiple teams
+- students to courses via course_student relation (many-to-many):  
+    a student can be in multiple course, a course can have many students
+- students to teams via team_student (many-to-many):  
+    a student can join many teams (different courses), a team can have many students
+- students to ratings (many-to-many):  
+    a student can leave many ratings, a rating is formed from 2 students
+
 ## Team members
 Name/ GitHub Username > roles 
 
