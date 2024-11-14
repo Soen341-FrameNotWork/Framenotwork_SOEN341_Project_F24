@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 INSTRUCTOR_EMAIL = "joumana.dargham@concordia.ca"
-PASSWORD = "password123"
+INSTRUCTOR_PASSWORD = "password123"
 
 @pytest.fixture
 def login_instructor():
@@ -33,7 +33,7 @@ def login_instructor():
         f"{BASE_URL}/auth/callback/credentials",
         data={
             "email": INSTRUCTOR_EMAIL,
-            "password": PASSWORD,
+            "password": INSTRUCTOR_PASSWORD,
             "userType": "instructor",
             "csrfToken": csrf_token,
             "callbackUrl": "http://localhost:3000/signin",
@@ -53,6 +53,7 @@ def login_instructor():
 
     # Return authenticated cookies
     return response.cookies
+
 
 def test_get_class_id_1(login_instructor):
     """
