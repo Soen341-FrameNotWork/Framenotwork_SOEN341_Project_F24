@@ -9,6 +9,8 @@ readme = "README.md"
 python = "^3.12"
 pytest = "^8.3.3"
 requests = "^2.32.3"
+bcrypt = "^4.2.0"
+mysql-connector-python = "^9.1.0"
 
 
 [build-system]
