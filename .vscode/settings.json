@@ -1,0 +1,28 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "soen363_test_prep",
+            "database": "soen363",
+            "username": "root"
+        },
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "driver": "MySQL",
+            "name": "soen341",
+            "connectString": "mysql://avnadmin:AVNS_pjiV_GuVcQlS1XWJmHw@soen341-framenotwork-evanteboul-a448.f.aivencloud.com:15686/defaultdb?ssl-mode=REQUIRED"
+        }
+    ]
+}
