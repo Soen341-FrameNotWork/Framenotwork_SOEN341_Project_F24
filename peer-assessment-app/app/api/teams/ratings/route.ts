@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import mysql from 'mysql2/promise';
 import GetDBSettings from '@lib/db';
-// import { getServerSession } from 'next-auth/next';
-// import { authOptions } from "@/app/utils/authOptions";
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from "@/app/utils/authOptions";
 
 
 interface Rating {
@@ -135,23 +135,23 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
     }
   
-  // let session = null;
+  let session = null;
   try {
     // Ensure both req and res are passed to getServerSession
-  //   session = await getServerSession(authOptions);
+    session = await getServerSession(authOptions);
   //   // console.log("session: ",session);
 
-  //   if (!session) {
-  //     return NextResponse.json({ message: "You must be logged in." }, { status: 401 });
-  //   }
+    if (!session) {
+      return NextResponse.json({ message: "You must be logged in." }, { status: 401 });
+    }
 
-  //   if (!session.user || session.user.role !== 'student') {
-  //       return NextResponse.json({ error: 'Unauthorized user role' }, { status: 401 });
-  //   }
-  // } catch (error) {
-  //   console.error("Error in GET handler:", error);
-  //   return NextResponse.json({ message: "Server Error"},{status:500});
-  // }
+    if (!session.user || session.user.role !== 'student') {
+        return NextResponse.json({ error: 'Unauthorized user role' }, { status: 401 });
+    }
+  } catch (error) {
+    console.error("Error in GET handler:", error);
+    return NextResponse.json({ message: "Server Error"},{status:500});
+  }
     const { 
       id: reviewee_id,
       teamId: team_id,
@@ -199,8 +199,8 @@ export async function POST(req: NextRequest) {
       work_ethic_comment = VALUES(work_ethic_comment)
   `;
 
-    // const reviewer_id = session.user.id;
-    const reviewer_id = 1;
+    const reviewer_id = session.user.id;
+    // const reviewer_id = 1;
 
     const params = [
       reviewer_id, 
@@ -216,7 +216,7 @@ export async function POST(req: NextRequest) {
       practical_comment,
       work_ethic_comment
     ];
-
+    try{
     const db = await mysql.createConnection(GetDBSettings());
     await db.execute(query, params);
     db.commit();
