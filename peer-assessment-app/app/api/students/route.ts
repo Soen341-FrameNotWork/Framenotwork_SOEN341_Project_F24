@@ -56,6 +56,7 @@ export async function GET(request: NextRequest) {
 
     const db = await mysql.createConnection(GetDBSettings());
     const [rows] = await db.execute(query, params);
+    db.commit();
     db.end();
 
     return NextResponse.json(rows);

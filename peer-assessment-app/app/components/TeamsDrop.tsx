@@ -1,40 +1,23 @@
-import { useState, useEffect } from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import StudentTeams from './TeamsStudents';
 
-
 interface Team {
   teamName: string;
   students: string[];
 }
 
-export default function TeamsDrop (){
+interface TeamsDropProps {
+  teams: Team[];
+  loading: boolean;
+}
 
-  const [teams, setTeams] = useState<Team[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    const fetchTeams = async () => {
-      try {
-        const response = await fetch('@app/api/instructor_teamsView');
-        const data = await response.json();
-        setTeams(data);
-      } 
-      catch (error) {
-        console.error('Couldn\'t get teams: ', error);
-      }
-      finally {
-        setLoading(false);
-      }
-    }
-    fetchTeams();
-  }, []);
+export default function TeamsDrop({ teams, loading }: TeamsDropProps) {
 
   if (loading) {
-    return <p>Loading teams...</p>
+    return <p>Loading teams...</p>;
   }
 
   return (
@@ -42,17 +25,16 @@ export default function TeamsDrop (){
       {teams.map((team, index) => (
         <Accordion defaultExpanded elevation={16} key={index}>
           <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
+            expandIcon={<ExpandMoreIcon sx={{color:'white'}} color={'inherit'}/>}
             aria-controls={`panel${index + 1}-content`}
             id={`panel${index + 1}-header`}
-            sx={
-              {
-                bgcolor: index % 2 === 0 ? '#800020' : '#8f8f8f',
-                color: 'white'
-              }
-            }
+            sx={{
+              bgcolor: '#800020',
+              color: 'white',
+              fontFamily:'Arial',
+            }}
           >
-            {team!.teamName}
+            {team?.teamName}
           </AccordionSummary>
           <AccordionDetails>
             <StudentTeams studentName={team.students}/>

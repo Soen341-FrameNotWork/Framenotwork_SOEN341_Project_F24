@@ -1,6 +1,7 @@
 
 import { NextResponse } from 'next/server';
 import mysql, { RowDataPacket } from 'mysql2/promise';
+import GetDBSettings from '@lib/db'; 
 
 interface Team {
   teamName: string;
@@ -10,15 +11,12 @@ interface Team {
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
-  const db = await mysql.createConnection({
-    host: process.env.host,
-    user: process.env.user,
-    password: process.env.password,
-    database: process.env.database,
-  });
+  const db = await mysql.createConnection(GetDBSettings());
+  
 
 
   try {
+    console.log('Fetching teams...');
     const [rows] = await db.query<RowDataPacket[]>(`
       SELECT t.t_id, t.t_name, s.s_name
       FROM teams t

@@ -3,7 +3,9 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import StudentList from '@/app/components/StudentList';
-
+import RatingForm from './StudentRatingForm';
+import TeamsDrop from '@/app/components/TeamsDrop';
+import StudentAttributes from '@/app/components/StudentAttributes';
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -35,6 +37,9 @@ function a11yProps(index: number) {
 
 export default function StudentTabs({courseId}: {courseId: number}) {
   const [value, setValue] =useState(0);
+  const [teams, setTeams] = useState([]); // Move teams state here
+  const [loadingTeams, setLoadingTeams] = useState<boolean>(true); // Loading state for teams
+
 
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -56,8 +61,29 @@ export default function StudentTabs({courseId}: {courseId: number}) {
       }
   };
 
+  // Fetch teams for the course
+  const fetchTeams = async () => {
+    setLoadingTeams(true); // Set loading state
+    try {
+      const response = await fetch('/api/instructor_teamsView');
+      if (!response.ok) {
+        throw new Error('Failed to fetch teams');
+      }
+      const data = await response.json();
+      setTeams(data);
+    } catch (error) {
+      console.error('Error fetching teams:', error);
+    } finally {
+      setLoadingTeams(false); // Stop loading state
+    }
+  };
+
+
+
+
   useEffect(() => {
       fetchStudents(course_id);
+      fetchTeams(); // Fetch teams when component mounts
   }, [course_id]);
 
 
@@ -72,14 +98,25 @@ export default function StudentTabs({courseId}: {courseId: number}) {
         >
           <Tab label="Student List" {...a11yProps(0)} />
           <Tab label="Teams" {...a11yProps(1)} />
+          <Tab label="Evaluate Team members" {...a11yProps(2)} />
+          <Tab label="My Profile" {...a11yProps(3)} />
 
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
         <StudentList students={students} course_id={course_id}/>
       </CustomTabPanel>
+
       <CustomTabPanel value={value} index={1}>
-        Teams
+        <TeamsDrop teams={teams} loading={loadingTeams}/>
+      </CustomTabPanel>
+
+      <CustomTabPanel value={value} index={2}>
+        <RatingForm courseId={courseId} />
+      </CustomTabPanel>
+
+      <CustomTabPanel value={value} index={3}>
+        <StudentAttributes course_id={courseId} />
       </CustomTabPanel>
     </Box>
   );
