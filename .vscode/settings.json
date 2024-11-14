@@ -39,6 +39,20 @@
             "name": "bruh",
             "database": "soen341",
             "username": "root"
+        },
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "driver": "MySQL",
+            "name": "remotedb_soen341",
+            "database": "defaultdb",
+            "username": "avnadmin",
+            "password": "AVNS_pjiV_GuVcQlS1XWJmHw",
+            "connectString": "mysql://avnadmin:AVNS_pjiV_GuVcQlS1XWJmHw@soen341-framenotwork-evanteboul-a448.f.aivencloud.com:15686/defaultdb?ssl-mode=REQUIRED"
         }
     ]
 }
