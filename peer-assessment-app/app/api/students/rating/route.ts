@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { NextRequest, NextResponse } from 'next/server';
 import mysql from 'mysql2/promise';
 import GetDBSettings from '@lib/db';
