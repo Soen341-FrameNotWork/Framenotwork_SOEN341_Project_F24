@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import ReactVirtualizedTable from './ResultSummary';
+import StudentTable from './ResultSummary';
 import StudentList from '@/app/components/StudentList';
 import TeamsDrop from '@/app/components/TeamsDrop';
 import DetailedView from './DetailedView';
@@ -113,7 +113,7 @@ export default function InstructorTabs({courseId}: {courseId: number}) {
       </CustomTabPanel>
       
       <CustomTabPanel value={value} index={2}>
-        <ReactVirtualizedTable />
+        <StudentTable course_id={courseId} />
       </CustomTabPanel>
 
       <CustomTabPanel value={value} index={3}>
