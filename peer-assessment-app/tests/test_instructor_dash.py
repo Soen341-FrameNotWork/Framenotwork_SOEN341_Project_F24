@@ -64,6 +64,25 @@ def test_dashboard(login_instructor):
                                 "work_ethic_comment": "Work ethic needs improvement",
                             },
                         },
+                        {
+                            "ratings": [
+                                {
+                                    "comments": {
+                                        "conceptual_comment": "Comment2",
+                                        "cooperative_comment": "Comment1",
+                                        "practical_comment": "Comment3",
+                                        "work_ethic_comment": "Comment4",
+                                    },
+                                    "conceptual_score": 3,
+                                    "cooperative_score": 2,
+                                    "overall_score": "3.8",
+                                    "practical_score": 5,
+                                    "reviewer_name": "Emily Davis",
+                                    "work_ethic_score": 5,
+                                },
+                            ],
+                            "reviewee_name": "Michael Wilson",
+                        },
                     ],
                 },
                 {
@@ -255,11 +274,11 @@ def test_dashboard_summary_result(login_instructor):
                 "student_id": 3,
                 "student_name": "Michael Wilson",
                 "team_name": "Team 1",
-                "avg_conceptual_score": 0,
-                "avg_cooperative_score": 0,
-                "avg_practical_score": 0,
-                "avg_work_ethic_score": 0,
-                "count_of_reviews": 0,
+                "avg_conceptual_score": "3.0000",
+                "avg_cooperative_score": "2.0000",
+                "avg_practical_score": "5.0000",
+                "avg_work_ethic_score": "5.0000",
+                "count_of_reviews": 1,
             },
             {
                 "student_id": 4,
