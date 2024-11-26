@@ -19,6 +19,48 @@ logger = logging.getLogger(__name__)
 INSTRUCTOR_EMAIL = "joumana.dargham@concordia.ca"
 INSTRUCTOR_PASSWORD = "password123"
 
+STUDENT_EMAIL = "emily.davis@example.com"
+STUDENT_PASSWORD = "studypass2"
+# STUDENT_EMAIL = "john.smith@example.com"
+# STUDENT_PASSWORD = "studypass1"
+
+
+@pytest.fixture
+def login_student():
+    """
+    Fixture to log in as a student and return the authenticated session cookies.
+    """
+
+    csrf_token, cookies = get_csrf_token()
+
+    if csrf_token is None:
+        pytest.fail("CSRF token not found")
+
+    response = requests.post(
+        f"{BASE_URL}/auth/callback/credentials",
+        data={
+            "email": STUDENT_EMAIL,
+            "password": STUDENT_PASSWORD,
+            "userType": "student",
+            "csrfToken": csrf_token,
+            "callbackUrl": "http://localhost:3000/signin",
+            "json": "true",
+        },
+        cookies=cookies,
+    )
+
+    logger.debug("Login Response status: %s", response.status_code)
+    logger.debug("Login Response text: %s", response.text)
+
+    assert response.status_code == 200, f"Expected 200 but got {response.status_code}"
+    assert response.json().get("url") in [
+        "http://localhost:3000/api/auth/signin?csrf=true",
+        "http://localhost:3000/signin",
+    ], "Unexpected callback URL"
+
+    return response.cookies
+
+
 @pytest.fixture
 def login_instructor():
     """
@@ -92,6 +134,7 @@ def test_get_class_id_1(login_instructor):
         assert student["s_name"]
         assert student["s_email"]
 
+
 def test_get_class_wrong_id(login_instructor):
     cookies = login_instructor
     response = requests.get(f"{BASE_URL}/students?courseId=9999999", cookies=cookies)
@@ -104,7 +147,3 @@ def test_get_class_wrong_id(login_instructor):
     response_json = response.json()
 
     assert response_json == []
-
-
-
-
