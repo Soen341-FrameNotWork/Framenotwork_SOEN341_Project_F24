@@ -1,8 +1,6 @@
-'use client';
-import InstructorTabs from  '../../components/InstructorTabs';
+"use client";
+import InstructorTabs from "../../components/InstructorTabs";
 
-export default function Home({params}: {params: {id: number}}) {
-    return(
-        <InstructorTabs courseId={params.id}/>
-    );
+export default function Home({ params }: { params: { id: number } }) {
+  return <InstructorTabs courseId={params.id} />;
 }

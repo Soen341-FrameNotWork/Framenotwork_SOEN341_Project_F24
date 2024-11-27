@@ -15,7 +15,8 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: "Peer assessment app",
-  description: "An app where peers can review their teammates and instructors create teams",
+  description:
+    "An app where peers can review their teammates and instructors create teams",
 };
 
 export default function RootLayout({
@@ -31,6 +32,5 @@ export default function RootLayout({
         {children}
       </body>
     </html>
-
   );
 }
