@@ -2,9 +2,7 @@ import { authOptions } from "@/app/utils/authOptions";
 import { getServerSession } from 'next-auth/next';
 import { NextResponse } from 'next/server';
 
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function GET(_req: Request) {
+export async function GET() {
   try {
     // Ensure both req and res are passed to getServerSession
     const session = await getServerSession(authOptions);
@@ -28,8 +26,7 @@ export async function GET(_req: Request) {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function POST(req: Request) {
+export async function POST() {
   try {
     // Ensure both req and res are passed to getServerSession
     const session = await getServerSession(authOptions);

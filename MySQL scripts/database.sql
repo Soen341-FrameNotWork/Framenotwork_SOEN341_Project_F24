@@ -23,7 +23,6 @@ CREATE TABLE IF NOT EXISTS courses (
     FOREIGN KEY (instructor_id) REFERENCES instructors(i_id)
 );
 
-
 CREATE TABLE IF NOT EXISTS teams (
     t_id INT AUTO_INCREMENT PRIMARY KEY,
     t_name VARCHAR(50) NOT NULL,
@@ -31,8 +30,6 @@ CREATE TABLE IF NOT EXISTS teams (
     FOREIGN KEY (course_id) REFERENCES courses(c_id),
     UNIQUE(t_name, course_id)
 );
-
-
 
 CREATE TABLE IF NOT EXISTS team_student (
     team_id INT NOT NULL,
@@ -52,7 +49,6 @@ CREATE TABLE IF NOT EXISTS course_student (
     FOREIGN KEY (student_id) REFERENCES students(s_id),
     primary key(course_id, student_id)
 );
-
 
 CREATE TABLE IF NOT EXISTS ratings (
     r_id INT AUTO_INCREMENT ,
@@ -75,9 +71,3 @@ CREATE TABLE IF NOT EXISTS ratings (
     PRIMARY KEY(r_id),
     CHECK (reviewer_id != reviewee_id)
 );
-
-select * from courses;
-
-
-
-

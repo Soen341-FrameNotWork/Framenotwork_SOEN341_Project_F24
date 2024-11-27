@@ -6,15 +6,12 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
 const SignInContainer = styled(Stack)(() => ({
-  position: 'absolute', // Ensure relative positioning for stacking context
-  // padding: 10,
-  height: '100%', // Ensure it has height
-  width: '100%', // Ensure it has width
-  backgroundImage: `url(${'/images/concordia.png'})`, // Set the background image
+  position: 'absolute',
+  height: '100%',
+  width: '100%',
+  backgroundImage: `url(${'/images/concordia.png'})`,
   backgroundSize: 'cover',
   backgroundPosition: 'center',
-  // Overlay with a white color at 50% opacity
-
 }));
 
 function Navbar() {
@@ -39,7 +36,7 @@ function FormContainer({ children }: { children: React.ReactNode }) {
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
-                  height: '100%', // Adjust height as needed
+                  height: '100%',
                   backgroundColor: 'rgba(255, 255, 255, 0.5)',
                   gap: 1,
               }}
