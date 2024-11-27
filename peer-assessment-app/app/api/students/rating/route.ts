@@ -1,9 +1,9 @@
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
-import { NextRequest, NextResponse } from 'next/server';
-import mysql from 'mysql2/promise';
-import GetDBSettings from '@lib/db';
-import { getServerSession } from 'next-auth';
+import { NextRequest, NextResponse } from "next/server";
+import mysql from "mysql2/promise";
+import GetDBSettings from "@lib/db";
+import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/utils/authOptions";
 
 // Function to calculate average scores
@@ -15,7 +15,6 @@ function calculateAverageScores(ratings: any[]): {
         work_ethic_score: number;
         overall_score: number;
     };
-    
 } {
     const scoresSum = {
         cooperative_score: 0,
@@ -55,55 +54,80 @@ function calculateAverageScores(ratings: any[]): {
     const categoryAverageScores = {
         cooperative_score:
             scoresCount.cooperative_score > 0
-                ? parseFloat((scoresSum.cooperative_score / scoresCount.cooperative_score).toFixed(1))
+                ? parseFloat(
+                      (
+                          scoresSum.cooperative_score /
+                          scoresCount.cooperative_score
+                      ).toFixed(1),
+                  )
                 : 0,
         conceptual_score:
             scoresCount.conceptual_score > 0
-                ? parseFloat((scoresSum.conceptual_score / scoresCount.conceptual_score).toFixed(1))
+                ? parseFloat(
+                      (
+                          scoresSum.conceptual_score /
+                          scoresCount.conceptual_score
+                      ).toFixed(1),
+                  )
                 : 0,
         practical_score:
             scoresCount.practical_score > 0
-                ? parseFloat((scoresSum.practical_score / scoresCount.practical_score).toFixed(1))
+                ? parseFloat(
+                      (
+                          scoresSum.practical_score /
+                          scoresCount.practical_score
+                      ).toFixed(1),
+                  )
                 : 0,
         work_ethic_score:
             scoresCount.work_ethic_score > 0
-                ? parseFloat((scoresSum.work_ethic_score / scoresCount.work_ethic_score).toFixed(1))
+                ? parseFloat(
+                      (
+                          scoresSum.work_ethic_score /
+                          scoresCount.work_ethic_score
+                      ).toFixed(1),
+                  )
                 : 0,
     };
 
-    
-
     // Calculate overall average as an average of all category averages
-    const overallAverage =
-        ((categoryAverageScores.cooperative_score +
+    const overallAverage = (
+        (categoryAverageScores.cooperative_score +
             categoryAverageScores.conceptual_score +
             categoryAverageScores.practical_score +
             categoryAverageScores.work_ethic_score) /
-        4).toFixed(1);
+        4
+    ).toFixed(1);
 
-   const averageScores = {
+    const averageScores = {
         ...categoryAverageScores,
-        overall_score: parseFloat(overallAverage)
+        overall_score: parseFloat(overallAverage),
     };
 
     return {
-        scores: averageScores
+        scores: averageScores,
     };
 }
 
 export async function GET(req: NextRequest) {
     try {
         const { searchParams } = new URL(req.url);
-        const courseId = searchParams.get('courseId');
+        const courseId = searchParams.get("courseId");
 
         if (!courseId) {
-            console.error('Course ID is missing');
-            return NextResponse.json({ error: 'Course ID is required' }, { status: 400 });
+            console.error("Course ID is missing");
+            return NextResponse.json(
+                { error: "Course ID is required" },
+                { status: 400 },
+            );
         }
 
         const session = await getServerSession(authOptions);
         if (!session || !session.user) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+            return NextResponse.json(
+                { error: "Unauthorized" },
+                { status: 401 },
+            );
         }
 
         // SQL query to fetch ratings for the student in a specific course
@@ -131,17 +155,17 @@ export async function GET(req: NextRequest) {
         const params = [courseId, s_id];
 
         const db = await mysql.createConnection(GetDBSettings());
-        
+
         // Execute query and fetch ratings data
-        const [rows]  = (await db.execute(query, params) as any[]);
-        
+        const [rows] = (await db.execute(query, params)) as any[];
+
         await db.commit();
-        
+
         await db.end();
 
         // If no ratings are found, return an empty response
         if (!rows || rows.length === 0) {
-          return NextResponse.json({ message: 'No ratings found' });
+            return NextResponse.json({ message: "No ratings found" });
         }
 
         // Calculate average ratings using our helper function
@@ -149,13 +173,15 @@ export async function GET(req: NextRequest) {
 
         // Return formatted response with calculated averages
         return NextResponse.json({
-          message: 'Success',
-          data: result,
-          raw_ratings: rows // Optional, include raw ratings if needed for debugging or additional info.
-      });
-
+            message: "Success",
+            data: result,
+            raw_ratings: rows, // Optional, include raw ratings if needed for debugging or additional info.
+        });
     } catch (error) {
-      console.error('Database error:', error);
-      return NextResponse.json({ error: 'Failed to fetch ratings' }, { status: 500 });
+        console.error("Database error:", error);
+        return NextResponse.json(
+            { error: "Failed to fetch ratings" },
+            { status: 500 },
+        );
     }
 }

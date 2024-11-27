@@ -1,15 +1,18 @@
-import { NextRequest, NextResponse } from 'next/server';
-import mysql from 'mysql2/promise';
-import GetDBSettings from '@lib/db';
+import { NextRequest, NextResponse } from "next/server";
+import mysql from "mysql2/promise";
+import GetDBSettings from "@lib/db";
 
 export async function GET(req: NextRequest) {
     try {
         const { searchParams } = new URL(req.url);
-        const courseId = searchParams.get('courseId');
+        const courseId = searchParams.get("courseId");
 
         if (!courseId) {
-            console.error('Course ID is missing');
-            return NextResponse.json({ error: 'Course ID is required' }, { status: 400 });
+            console.error("Course ID is missing");
+            return NextResponse.json(
+                { error: "Course ID is required" },
+                { status: 400 },
+            );
         }
 
         const db = await mysql.createConnection(GetDBSettings());
@@ -68,30 +71,32 @@ export async function GET(req: NextRequest) {
                 avg_cooperative_score: 0,
                 avg_practical_score: 0,
                 avg_work_ethic_score: 0,
-                count_of_reviews: 0
+                count_of_reviews: 0,
             };
 
             return {
                 student_id: student.s_id,
                 student_name: student.s_name,
                 team_name: student.team_name,
-                ...reviewData
+                ...reviewData,
             };
         });
 
         // If no students are found, return an empty response
         if (!result || result.length === 0) {
-          return NextResponse.json({ message: 'No students found' });
+            return NextResponse.json({ message: "No students found" });
         }
 
         // Return formatted response with merged data
         return NextResponse.json({
-          message: 'Success',
-          data: result 
-      });
-
+            message: "Success",
+            data: result,
+        });
     } catch (error) {
-      console.error('Database error:', error);
-      return NextResponse.json({ error: 'Failed to fetch ratings' }, { status: 500 });
+        console.error("Database error:", error);
+        return NextResponse.json(
+            { error: "Failed to fetch ratings" },
+            { status: 500 },
+        );
     }
 }
