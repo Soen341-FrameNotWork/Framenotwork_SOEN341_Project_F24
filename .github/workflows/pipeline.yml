@@ -68,7 +68,7 @@ jobs:
 
       - name: Format Code with Prettier
         working-directory: peer-assessment-app
-        run: npm run format:check || echo "Prettier found issues, but continuing without failing the job."
+        run: npm run format:check
 
       - name: Wait for MySQL to be ready
         run: |

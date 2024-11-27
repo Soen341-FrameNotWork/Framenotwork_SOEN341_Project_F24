@@ -1,0 +1,20 @@
+Date: 14-11-2024
+Time: 90 minutes
+
+Attendees:
+
+Bulat Abdullin
+Tymofiy Kovalenko
+Jidapa Laopikanon
+Evan Teboul
+Mathieu Pare Vargas
+
+Important points of the meeting:
+
+- Went over the sprint 4 plan and guidelines in order to plan what our objectives are.
+- Since the team proposed features were completed in Sprint 3, our focus is now on the GitHub repository organization, code review, coding standards, maintaining code guided by a static analysis tool and completing the remaining unit tests.
+  - The extra feature was completed mainly by Evan with some help from Mathieu
+  - The repository organization will be done by Bulat
+  - Code review by Bulat and Mathieu
+  - Coding standards by Jidapa and Jeremie
+  - Unit tests by Tim and Jidapa
