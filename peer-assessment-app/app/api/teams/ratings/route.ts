@@ -1,9 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
-import mysql from 'mysql2/promise';
-import GetDBSettings from '@lib/db';
-import { getServerSession } from 'next-auth/next';
+import { NextRequest, NextResponse } from "next/server";
+import mysql from "mysql2/promise";
+import GetDBSettings from "@lib/db";
+import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/utils/authOptions";
-
 
 interface Rating {
   reviewer_name: string | null;
@@ -32,7 +31,13 @@ interface Team {
 }
 
 const processRatingsData = (data: any): Team[] => {
-  const teams: { [teamName: string]: { teamId: string; teamName: string; reviewees: { [revieweeName: string]: Reviewee } } } = {};
+  const teams: {
+    [teamName: string]: {
+      teamId: string;
+      teamName: string;
+      reviewees: { [revieweeName: string]: Reviewee };
+    };
+  } = {};
 
   // Loop through each row of data
   data.forEach((row: any) => {
@@ -82,15 +87,18 @@ const processRatingsData = (data: any): Team[] => {
 // The rest of your API route remains unchanged
 
 // Marking this as a dynamic route to disable static optimization
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const courseId = searchParams.get('courseId');
+    const courseId = searchParams.get("courseId");
     if (!courseId) {
-      console.error('Course ID is missing');
-      return NextResponse.json({ error: 'Course ID is required' }, { status: 400 });
+      console.error("Course ID is missing");
+      return NextResponse.json(
+        { error: "Course ID is required" },
+        { status: 400 },
+      );
     }
 
     const query = `SELECT 
@@ -122,66 +130,72 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(processRatingsData(rows));
   } catch (error) {
-    console.error('Database error:', error);
-    return NextResponse.json({ error: 'Failed to fetch students' }, { status: 500 });
+    console.error("Database error:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch students" },
+      { status: 500 },
+    );
   }
 }
 
 export async function POST(req: NextRequest) {
   // try {
   const body = await req.json();
-  console.log('Received rating:', body);
-    if (!body) {
-      return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
-    }
-  
+  console.log("Received rating:", body);
+  if (!body) {
+    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+  }
+
   let session = null;
   try {
     // Ensure both req and res are passed to getServerSession
     session = await getServerSession(authOptions);
-  //   // console.log("session: ",session);
+    //   // console.log("session: ",session);
 
     if (!session) {
-      return NextResponse.json({ message: "You must be logged in." }, { status: 401 });
+      return NextResponse.json(
+        { message: "You must be logged in." },
+        { status: 401 },
+      );
     }
 
-    if (!session.user || session.user.role !== 'student') {
-        return NextResponse.json({ error: 'Unauthorized user role' }, { status: 401 });
+    if (!session.user || session.user.role !== "student") {
+      return NextResponse.json(
+        { error: "Unauthorized user role" },
+        { status: 401 },
+      );
     }
   } catch (error) {
     console.error("Error in GET handler:", error);
-    return NextResponse.json({ message: "Server Error"},{status:500});
+    return NextResponse.json({ message: "Server Error" }, { status: 500 });
   }
-    const { 
-      id: reviewee_id,
-      teamId: team_id,
-      cooperation: cooperative_score,
-      conceptual: conceptual_score,
-      practical: practical_score,
-      workEthic: work_ethic_score,
-      overallScore:overall_score,
-      cooperationComment: cooperative_comment,
-      conceptualComment: conceptual_comment,
-      practicalComment: practical_comment,
-      workEthicComment: work_ethic_comment, 
-    } = body;
+  const {
+    id: reviewee_id,
+    teamId: team_id,
+    cooperation: cooperative_score,
+    conceptual: conceptual_score,
+    practical: practical_score,
+    workEthic: work_ethic_score,
+    overallScore: overall_score,
+    cooperationComment: cooperative_comment,
+    conceptualComment: conceptual_comment,
+    practicalComment: practical_comment,
+    workEthicComment: work_ethic_comment,
+  } = body;
 
-    
-    console.log('Received rewiewee_id: ', reviewee_id);
-    console.log('Received team_id: ', team_id);
-    console.log('Received cooperative_score: ', cooperative_score);
-    console.log('Received conceptual_score: ', conceptual_score);
-    console.log('Received practical_score: ', practical_score);
-    console.log('Received work_ethic_score: ', work_ethic_score);
-    console.log('Received overall_score: ', overall_score);
-    console.log('Received cooperative_comment: ', cooperative_comment);
-    console.log('Received conceptual_comment: ', conceptual_comment);
-    console.log('Received practical_comment: ', practical_comment);
-    console.log('Received work_ethic_comment: ', work_ethic_comment);
-    
+  console.log("Received rewiewee_id: ", reviewee_id);
+  console.log("Received team_id: ", team_id);
+  console.log("Received cooperative_score: ", cooperative_score);
+  console.log("Received conceptual_score: ", conceptual_score);
+  console.log("Received practical_score: ", practical_score);
+  console.log("Received work_ethic_score: ", work_ethic_score);
+  console.log("Received overall_score: ", overall_score);
+  console.log("Received cooperative_comment: ", cooperative_comment);
+  console.log("Received conceptual_comment: ", conceptual_comment);
+  console.log("Received practical_comment: ", practical_comment);
+  console.log("Received work_ethic_comment: ", work_ethic_comment);
 
-
-    const query = `
+  const query = `
     INSERT INTO ratings (
       reviewer_id, reviewee_id, team_id, cooperative_score, conceptual_score, practical_score, 
       work_ethic_score, overall_score, cooperative_comment, conceptual_comment, 
@@ -199,34 +213,38 @@ export async function POST(req: NextRequest) {
       work_ethic_comment = VALUES(work_ethic_comment)
   `;
 
-    const reviewer_id = session.user.id;
-    // const reviewer_id = 1;
+  const reviewer_id = session.user.id;
+  // const reviewer_id = 1;
 
-    const params = [
-      reviewer_id, 
-      reviewee_id, 
-      team_id, 
-      cooperative_score, 
-      conceptual_score, 
-      practical_score, 
-      work_ethic_score, 
-      overall_score,
-      cooperative_comment,
-      conceptual_comment,
-      practical_comment,
-      work_ethic_comment
-    ];
-    try{
+  const params = [
+    reviewer_id,
+    reviewee_id,
+    team_id,
+    cooperative_score,
+    conceptual_score,
+    practical_score,
+    work_ethic_score,
+    overall_score,
+    cooperative_comment,
+    conceptual_comment,
+    practical_comment,
+    work_ethic_comment,
+  ];
+  try {
     const db = await mysql.createConnection(GetDBSettings());
     await db.execute(query, params);
     db.commit();
     db.end();
 
-    return NextResponse.json({ message: 'Rating added successfully' }, { status: 200 });
-    
-  }
-  catch(error){
-    console.error('Database error:', error);
-    return NextResponse.json({ error: 'Failed to add rating' }, { status: 500 });
+    return NextResponse.json(
+      { message: "Rating added successfully" },
+      { status: 200 },
+    );
+  } catch (error) {
+    console.error("Database error:", error);
+    return NextResponse.json(
+      { error: "Failed to add rating" },
+      { status: 500 },
+    );
   }
 }

@@ -1,7 +1,7 @@
 "use client";
 
-import React from 'react';
-import { Card, CardContent, Typography, Box } from '@mui/material';
+import React from "react";
+import { Card, CardContent, Typography, Box } from "@mui/material";
 
 interface Ratings {
   cooperation: number;
@@ -17,9 +17,13 @@ interface StudentInfoCardProps {
   comments: string[];
 }
 
-const StudentInfoCard: React.FC<StudentInfoCardProps> = ({ studentName, ratings, comments }) => {
+const StudentInfoCard: React.FC<StudentInfoCardProps> = ({
+  studentName,
+  ratings,
+  comments,
+}) => {
   return (
-    <Card sx={{ maxWidth: 400, mx: 'auto', my: 2, p: 2, boxShadow: 3 }}>
+    <Card sx={{ maxWidth: 400, mx: "auto", my: 2, p: 2, boxShadow: 3 }}>
       <CardContent>
         <Typography variant="h5" gutterBottom>
           {studentName}&#39;s Ratings
@@ -49,7 +53,7 @@ const StudentInfoCard: React.FC<StudentInfoCardProps> = ({ studentName, ratings,
           </Typography>
         </Box>
 
-        <Box sx={{ my: 1, color: '#800020' }}>
+        <Box sx={{ my: 1, color: "#800020" }}>
           <Typography variant="body1">
             <strong>Overall score:</strong> {ratings.overall}
           </Typography>

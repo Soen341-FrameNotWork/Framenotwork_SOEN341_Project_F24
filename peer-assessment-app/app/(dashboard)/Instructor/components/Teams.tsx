@@ -1,17 +1,17 @@
-import { 
-  FormControl, 
-  InputLabel, 
-  Select, 
-  MenuItem, 
-  SelectChangeEvent, 
-  Typography, 
-  Box, 
-  ListItemText, 
-  Button, 
-  Dialog, 
-  DialogActions, 
-  DialogContent, 
-  DialogTitle 
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  SelectChangeEvent,
+  Typography,
+  Box,
+  ListItemText,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
@@ -28,26 +28,32 @@ interface StudentListProps {
   onTeamChange: () => void;
 }
 
-export default function Teams({ students, course_id, onTeamChange}: StudentListProps) {
+export default function Teams({
+  students,
+  course_id,
+  onTeamChange,
+}: StudentListProps) {
   const [teamsData, setTeamsData] = useState([]);
-  
+
   useEffect(() => {
     const fetchTeamsData = async () => {
       try {
-        const response = await fetch(`/api/teams/ratings?courseId=${course_id}`);
+        const response = await fetch(
+          `/api/teams/ratings?courseId=${course_id}`,
+        );
         const data = await response.json();
         setTeamsData(data);
       } catch (error) {
-        console.error('Error fetching teams data:', error);
+        console.error("Error fetching teams data:", error);
       }
     };
 
     fetchTeamsData();
   }, [course_id]);
 
-  const [student, setStudent] = useState('');
-  const [team, setTeam] = useState('');
-  
+  const [student, setStudent] = useState("");
+  const [team, setTeam] = useState("");
+
   // State for controlling the dialog visibility
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -61,55 +67,69 @@ export default function Teams({ students, course_id, onTeamChange}: StudentListP
 
   const handleConfirm = () => {
     if (student.length === 0 || team.length === 0) {
-      alert('Select a student and a team!');
+      alert("Select a student and a team!");
       return;
     }
 
-    fetch('/api/change-team', {
-      method: 'POST',
+    fetch("/api/change-team", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ student: student, course_id: course_id, team_id: (team as any).teamId }),
+      body: JSON.stringify({
+        student: student,
+        course_id: course_id,
+        team_id: (team as any).teamId,
+      }),
     })
-      .then(response => {
+      .then((response) => {
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error("Network response was not ok");
         }
         return response.json();
       })
-      .then(data => {
-        console.log('Success:', data);
-        alert('Student has changed team successfully!');
+      .then((data) => {
+        console.log("Success:", data);
+        alert("Student has changed team successfully!");
         handleCloseDialog(); // Close the dialog on success
         onTeamChange(); // Trigger refetch of teams after successful submission
       })
       .catch((error) => {
-        console.error('Error:', error);
-        alert('Failed to change team.');
+        console.error("Error:", error);
+        alert("Failed to change team.");
       });
   };
 
   // Handlers for opening and closing the dialog
   const handleOpenDialog = () => setOpenDialog(true);
-  
+
   const handleCloseDialog = () => setOpenDialog(false);
 
   return (
     <>
       {/* Button to open the dialog */}
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
-        <Button variant="contained" color="primary" onClick={handleOpenDialog} sx={{ marginRight: '16px' }}>
+      <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleOpenDialog}
+          sx={{ marginRight: "16px" }}
+        >
           Edit Teams
         </Button>
       </Box>
 
       {/* Dialog for selecting student and team */}
-      <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
+      <Dialog
+        open={openDialog}
+        onClose={handleCloseDialog}
+        maxWidth="sm"
+        fullWidth
+      >
         <DialogTitle>Edit Team Assignment</DialogTitle>
-        
+
         <DialogContent>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: "16px" }}>
             {/* Student Select */}
             <FormControl fullWidth>
               <InputLabel id="student-select-label">Student</InputLabel>
@@ -121,7 +141,10 @@ export default function Teams({ students, course_id, onTeamChange}: StudentListP
                 onChange={handleStudentChange}
               >
                 {students.map((student) => (
-                  <MenuItem key={(student as any).s_name} value={(student as any)}>
+                  <MenuItem
+                    key={(student as any).s_name}
+                    value={student as any}
+                  >
                     <ListItemText primary={(student as any).s_name} />
                   </MenuItem>
                 ))}
@@ -142,7 +165,7 @@ export default function Teams({ students, course_id, onTeamChange}: StudentListP
                 onChange={handleTeamChange}
               >
                 {teamsData.map((team) => (
-                  <MenuItem key={(team as any).teamName} value={(team as any)}>
+                  <MenuItem key={(team as any).teamName} value={team as any}>
                     <ListItemText primary={(team as any).teamName} />
                   </MenuItem>
                 ))}
