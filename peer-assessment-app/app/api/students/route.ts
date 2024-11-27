@@ -28,32 +28,7 @@ export async function GET(request: NextRequest) {
                    ON student_ids.student_id = S.s_id
                    ORDER BY S.s_id;`;
     const params = [courseId];
-    // if (session.user.role == 'instructor'){
-    //   query = `
-    //   SELECT S.s_id, S.s_name, S.s_email FROM students S
-    //   JOIN (SELECT student_id FROM course_student WHERE course_id = ?) AS student_ids
-    //   ON student_ids.student_id = S.s_id
-    //   ORDER BY S.s_id;`;
-    //   params = [courseId];
-    // }
-    // else{
-    //   query = `SELECT s.s_id, s.s_name, s.s_email
-    //           FROM students s
-    //           JOIN team_student ts ON s.s_id = ts.student_id
-    //           JOIN teams t ON ts.team_id = t.t_id
-    //           WHERE ts.team_id = (
-    //               SELECT ts2.team_id
-    //               FROM team_student ts2
-    //               WHERE ts2.student_id = ? AND ts2.course_id = ?
-    //           )
-    //           AND ts.course_id = ?;`;
-    //   const s_id = session.user.id;
-    //   params = [s_id,courseId,courseId];
-      
-    // }
-
     
-
     const db = await mysql.createConnection(GetDBSettings());
     const [rows] = await db.execute(query, params);
     db.commit();

@@ -60,7 +60,6 @@ export default function StudentList({students, course_id}: StudentListProps) {
     e.preventDefault();
 
     const selectedStudents = selectedRows.map((id) => {
-      // console.log('id: ',id);
       return rows.find((row) => row.s_id === id);
     });
 
